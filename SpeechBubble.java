@@ -4,11 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SpeechBubble extends JPanel {
-    private final JTextArea textArea;
     private final boolean isRight;
     private static final int MAX_WIDTH = 200;
     private Color bubbleColor;
 
+    private JTextArea textArea;
+    private JLabel imageLabel;
+
+    // 텍스트용 생성자
     public SpeechBubble(String text, boolean isRight, Color bubbleColor) {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
@@ -23,35 +26,50 @@ public class SpeechBubble extends JPanel {
         textArea.setFocusable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setBorder(BorderFactory.createEmptyBorder(4, 6, 8, 12)); // 상, 좌, 하, 우
+        textArea.setBorder(BorderFactory.createEmptyBorder(4, 6, 8, 13));
 
         add(textArea, BorderLayout.CENTER);
     }
 
+    // 이미지용 생성자
+    public SpeechBubble(ImageIcon icon, boolean isRight, Color bubbleColor) {
+        this.isRight = isRight;
+        this.bubbleColor = bubbleColor;
+        setOpaque(false);
+        setLayout(new BorderLayout());
+
+        imageLabel = new JLabel(icon);
+        imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        imageLabel.setOpaque(false);
+
+        add(imageLabel, BorderLayout.CENTER);
+    }
+
     @Override
     public Dimension getPreferredSize() {
-        textArea.setSize(new Dimension(MAX_WIDTH, Short.MAX_VALUE));
-        Dimension d = textArea.getPreferredSize();
+        if (textArea != null) {
+            textArea.setSize(new Dimension(MAX_WIDTH, Short.MAX_VALUE));
+            Dimension d = textArea.getPreferredSize();
 
-        FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
-        int maxLineWidth = 0;
-        for (String line : textArea.getText().split("\n")) {
-            int lineWidth = fm.stringWidth(line);
-            if (lineWidth > maxLineWidth) {
-                maxLineWidth = lineWidth;
+            FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
+            int maxLineWidth = 0;
+            for (String line : textArea.getText().split("\n")) {
+                int lineWidth = fm.stringWidth(line);
+                maxLineWidth = Math.max(maxLineWidth, lineWidth);
             }
+
+            int paddingHorizontal = 24;
+            int extraMargin = 8;
+            int width = Math.min(Math.max(maxLineWidth + paddingHorizontal + extraMargin, 40), MAX_WIDTH + paddingHorizontal);
+            textArea.setSize(width, Short.MAX_VALUE);
+            int height = textArea.getPreferredSize().height;
+
+            return new Dimension(width, height);
+        } else if (imageLabel != null) {
+            Dimension size = imageLabel.getPreferredSize();
+            return new Dimension(size.width + 24, size.height + 20);
         }
-
-        int paddingHorizontal = 24;
-        int extraMargin = 8;	// 말풍선 끝 글자 여백
-
-        int width = Math.min(Math.max(maxLineWidth + paddingHorizontal + extraMargin, 40), MAX_WIDTH + paddingHorizontal);
-
-        textArea.setSize(width, Short.MAX_VALUE);
-
-        int height = textArea.getPreferredSize().height;
-
-        return new Dimension(width, height);
+        return super.getPreferredSize();
     }
 
     @Override
@@ -61,21 +79,18 @@ public class SpeechBubble extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         int arc = 16;
-        int tailW = 13;  // 꼬리 너비
-        int tailH = 13;  // 꼬리 높이
+        int tailW = 13;
+        int tailH = 13;
 
         int bubbleX = isRight ? 0 : tailW;
         int bubbleY = 0;
         int bubbleW = getWidth() - tailW;
         int bubbleH = getHeight() - 4;
 
-        // 말풍선 본체
         g2.setColor(bubbleColor);
         g2.fillRoundRect(bubbleX, bubbleY, bubbleW, bubbleH, arc, arc);
 
-        // 꼬리 그리기 - 오른쪽 아래 모서리 부근
         if (isRight) {
-            // 꼬리를 둥근 삼각형으로 오른쪽 아래 코너에 붙이기
             int baseX = bubbleX + bubbleW - arc / 2;
             int baseY = bubbleY + bubbleH - tailH;
 
@@ -83,13 +98,8 @@ public class SpeechBubble extends JPanel {
             tail.addPoint(baseX, baseY);
             tail.addPoint(baseX + tailW, baseY + tailH / 2);
             tail.addPoint(baseX, baseY + tailH);
-
             g2.fillPolygon(tail);
-
-            // 둥근 곡선으로 꼬리 연결 (optional)
-            g2.setColor(bubbleColor);
             g2.fillOval(baseX - tailW / 2, baseY + tailH / 2 - tailW / 2, tailW, tailW);
-
         } else {
             int baseX = bubbleX + arc / 2;
             int baseY = bubbleY + bubbleH - tailH;
@@ -98,10 +108,7 @@ public class SpeechBubble extends JPanel {
             tail.addPoint(baseX, baseY);
             tail.addPoint(baseX - tailW, baseY + tailH / 2);
             tail.addPoint(baseX, baseY + tailH);
-
             g2.fillPolygon(tail);
-
-            g2.setColor(bubbleColor);
             g2.fillOval(baseX - tailW / 2 - tailW / 2, baseY + tailH / 2 - tailW / 2, tailW, tailW);
         }
 
