@@ -2,6 +2,10 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SpeechBubble extends JPanel {
     private final boolean isRight;
@@ -10,6 +14,11 @@ public class SpeechBubble extends JPanel {
 
     private JTextArea textArea;
     private JLabel imageLabel;
+    private JLabel timeLabel; // 타임스탬프용 라벨
+    private Runnable onImageClick;
+
+    // 타임스탬프 저장용 필드
+    private String timestamp;
 
     // 텍스트용 생성자
     public SpeechBubble(String text, boolean isRight, Color bubbleColor) {
@@ -28,21 +37,53 @@ public class SpeechBubble extends JPanel {
         textArea.setWrapStyleWord(true);
         textArea.setBorder(BorderFactory.createEmptyBorder(4, 6, 8, 13));
 
-        add(textArea, BorderLayout.CENTER);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setOpaque(false);
+        panel.add(textArea, BorderLayout.CENTER);
+
+        add(panel, BorderLayout.CENTER);
     }
 
     // 이미지용 생성자
-    public SpeechBubble(ImageIcon icon, boolean isRight, Color bubbleColor) {
+    public SpeechBubble(ImageIcon icon, boolean isRight, Color bubbleColor, Runnable onImageClick) {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
+        this.onImageClick = onImageClick;
+        this.timestamp = getCurrentTime();
+
         setOpaque(false);
         setLayout(new BorderLayout());
 
         imageLabel = new JLabel(icon);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
         imageLabel.setOpaque(false);
+        imageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        add(imageLabel, BorderLayout.CENTER);
+        imageLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (onImageClick != null) {
+                    onImageClick.run();
+                }
+            }
+        });
+
+        // 타임스탬프 라벨 생성
+        timeLabel = new JLabel(timestamp);
+        timeLabel.setFont(new Font("Malgun Gothic", Font.PLAIN, 10));
+        timeLabel.setForeground(Color.DARK_GRAY);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setOpaque(false);
+        panel.add(imageLabel, BorderLayout.CENTER);
+        panel.add(timeLabel, BorderLayout.SOUTH);
+
+        add(panel, BorderLayout.CENTER);
+    }
+
+    private String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        return sdf.format(new Date());
     }
 
     @Override
@@ -64,10 +105,21 @@ public class SpeechBubble extends JPanel {
             textArea.setSize(width, Short.MAX_VALUE);
             int height = textArea.getPreferredSize().height;
 
+            if (timeLabel != null) {
+                height += timeLabel.getPreferredSize().height;
+            }
+
             return new Dimension(width, height);
         } else if (imageLabel != null) {
             Dimension size = imageLabel.getPreferredSize();
-            return new Dimension(size.width + 24, size.height + 20);
+            int height = size.height + 20;
+            int width = size.width + 24;
+
+            if (timeLabel != null) {
+                height += timeLabel.getPreferredSize().height;
+            }
+
+            return new Dimension(width, height);
         }
         return super.getPreferredSize();
     }
