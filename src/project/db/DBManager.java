@@ -1,4 +1,4 @@
-package project;
+package project.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,7 +9,7 @@ public class DBManager {
 	private static final String USER = "root";
 	private static final String PASSWORD = "wkdwlsrb";
 	
-	static Connection getConnection() throws SQLException {
+	public static Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(URL, USER, PASSWORD);
 	}
 }

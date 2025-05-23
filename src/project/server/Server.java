@@ -1,10 +1,12 @@
-package project;
+package project.server;
 
 import java.io.*;
 import java.net.*;
 import java.sql.*;
 import java.security.*;
 import java.util.*;
+
+import project.db.DBManager;
 
 class msgth extends Thread {
     private final String token = "ajk123#%k2!lsd!234!%^^f17!@#sdfs!@$3$*s1s56!@#";

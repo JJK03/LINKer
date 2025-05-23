@@ -1,10 +1,10 @@
-package project;
+package project.util;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
-public class ThinScrollBarUI extends BasicScrollBarUI {
+public class ScrollBar extends BasicScrollBarUI {
 
     @Override
     protected void configureScrollBarColors() {

@@ -1,4 +1,4 @@
-package project;
+package project.ui;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -9,6 +9,11 @@ import java.io.File;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import project.util.MessageWithTimestamp;
+import project.util.RoundedTextField;
+import project.util.SpeechBubble;
+import project.util.ScrollBar;
 
 public class LINKer extends JFrame {
 
@@ -82,7 +87,7 @@ public class LINKer extends JFrame {
 
         JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
         verticalBar.setPreferredSize(new Dimension(6, Integer.MAX_VALUE));
-        verticalBar.setUI(new ThinScrollBarUI());
+        verticalBar.setUI(new ScrollBar());
         verticalBar.setUnitIncrement(20); // 휠 스크롤 속도 증가
 
         // 입력창 하단 패널
