@@ -15,7 +15,7 @@ public class SpeechBubble extends JPanel {
     private JTextArea textArea;
     private JLabel imageLabel;
     private JLabel timeLabel; // 타임스탬프용 라벨
-    private Runnable onImageClick;
+    // private Runnable onImageClick;
 
     // 타임스탬프 저장용 필드
     private String timestamp;
@@ -48,7 +48,7 @@ public class SpeechBubble extends JPanel {
     public SpeechBubble(ImageIcon icon, boolean isRight, Color bubbleColor, Runnable onImageClick) {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
-        this.onImageClick = onImageClick;
+        // this.onImageClick = onImageClick;
         this.timestamp = getCurrentTime();
 
         setOpaque(false);
@@ -90,7 +90,7 @@ public class SpeechBubble extends JPanel {
     public Dimension getPreferredSize() {
         if (textArea != null) {
             textArea.setSize(new Dimension(MAX_WIDTH, Short.MAX_VALUE));
-            Dimension d = textArea.getPreferredSize();
+            // Dimension d = textArea.getPreferredSize();
 
             FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
             int maxLineWidth = 0;
