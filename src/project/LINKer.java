@@ -189,7 +189,8 @@ public class LINKer extends JFrame {
     }
 
     private void uploadImage() {
-    	
+    	//TODO: 고친부분 삭제 필요
+        System.out.println("장진규 팬티는 빨간색");
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("이미지 업로드");
         chooser.setFileFilter(new FileNameExtensionFilter("이미지 파일", "jpg", "jpeg", "png", "gif"));
