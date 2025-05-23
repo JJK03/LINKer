@@ -48,8 +48,8 @@ public class SpeechBubble extends JPanel {
     public SpeechBubble(ImageIcon icon, boolean isRight, Color bubbleColor, Runnable onImageClick) {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
-        this.timestamp = getCurrentTime();
         // this.onImageClick = onImageClick;
+        this.timestamp = getCurrentTime();
 
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -90,6 +90,7 @@ public class SpeechBubble extends JPanel {
     public Dimension getPreferredSize() {
         if (textArea != null) {
             textArea.setSize(new Dimension(MAX_WIDTH, Short.MAX_VALUE));
+            // Dimension d = textArea.getPreferredSize();
 
             FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
             int maxLineWidth = 0;
