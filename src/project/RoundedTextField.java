@@ -40,9 +40,6 @@ public class RoundedTextField extends JTextField {
             g3.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g3.setColor(new Color(234, 234, 234));  // 연한 회색
             Insets insets = getInsets();
-            FontMetrics fm = g3.getFontMetrics();
-            int x = insets.left;
-            int y = getHeight() / 2 + fm.getAscent() / 2 - 2;
             g3.drawString(placeholder, insets.left + 5, getHeight() / 2 + g.getFontMetrics().getAscent() / 2 - 2);
             g3.dispose();
         }
