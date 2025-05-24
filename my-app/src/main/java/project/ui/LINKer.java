@@ -63,12 +63,12 @@ public class LINKer extends JFrame {
 
         // 상단 닫기 버튼
         // ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/Back.png"));
-        ImageIcon rawIcon = SvgUtils.loadSvgIcon("/img/Back.svg", 1200, 1200);
-        Image img = rawIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        ImageIcon closeIcon = new ImageIcon(img);
+        // Image img = rawIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        // ImageIcon closeIcon = new ImageIcon(img);
+        ImageIcon closeIcon = SvgUtils.loadSvgIcon("/img/Back.svg", 35, 35);
 
         JButton closeButton = new JButton(closeIcon);
-        closeButton.setBounds(10, 10, 30, 30);
+        closeButton.setBounds(10, 14, 30, 30);
         closeButton.setContentAreaFilled(false);
         closeButton.setBorderPainted(false);
         closeButton.setFocusPainted(false);
@@ -99,9 +99,10 @@ public class LINKer extends JFrame {
         inputPanel.setOpaque(false);
         contentPane.add(inputPanel);
 
-        ImageIcon plusRawIcon = new ImageIcon(getClass().getResource("/img/Plus.png")); // +이미지 경로
-        Image plusImg = plusRawIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        ImageIcon plusIcon = new ImageIcon(plusImg);
+        // ImageIcon plusRawIcon = new ImageIcon(getClass().getResource("/img/Plus.png")); // +이미지 경로
+        // Image plusImg = plusRawIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        // ImageIcon plusIcon = new ImageIcon(plusImg);
+        ImageIcon plusIcon = SvgUtils.loadSvgIcon("/img/Plus.svg", 35, 35);
 
         JButton imageButton = new JButton(plusIcon);
         imageButton.setPreferredSize(new Dimension(40, 40));
@@ -115,9 +116,10 @@ public class LINKer extends JFrame {
         inputField = new RoundedTextField(20);
         inputPanel.add(inputField, BorderLayout.CENTER);
 
-        ImageIcon sendRawIcon = new ImageIcon(getClass().getResource("/img/Send.png")); // 내가 준비한 전송 이미지 경로
-        Image sendImg = sendRawIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // 버튼 크기에 맞게 조정
-        ImageIcon sendIcon = new ImageIcon(sendImg);
+        // ImageIcon sendRawIcon = new ImageIcon(getClass().getResource("/img/Send.png")); // 내가 준비한 전송 이미지 경로
+        // Image sendImg = sendRawIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH); // 버튼 크기에 맞게 조정
+        // ImageIcon sendIcon = new ImageIcon(sendImg);
+        ImageIcon sendIcon = SvgUtils.loadSvgIcon("/img/Send.svg", 35, 35);
 
         JButton sendButton = new JButton(sendIcon);
         sendButton.setPreferredSize(new Dimension(40, 40));
@@ -152,7 +154,7 @@ public class LINKer extends JFrame {
         JLabel lblTitle = new JLabel("상대방_이름", SwingConstants.CENTER);
         lblTitle.setForeground(new Color(200, 200, 200));
         lblTitle.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-        lblTitle.setBounds(0, 8, width, 24);
+        lblTitle.setBounds(0, 16, width, 24);
         contentPane.add(lblTitle);
 
         // 이벤트 처리
