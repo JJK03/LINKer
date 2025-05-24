@@ -1,16 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- 그룹 아이디는 회사명 또는 도메인 반대로 씀 -->
     <groupId>com.VIBE.project</groupId>
-
-    <!-- 프로젝트 이름 -->
     <artifactId>LINKer</artifactId>
-
-    <!-- 버전 -->
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -18,7 +14,6 @@
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
 
-    <!-- 의존성들 -->
     <dependencies>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
@@ -32,13 +27,7 @@
             <version>1.16</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.formdev/svgSalamander -->
-        <dependency>
-            <groupId>com.formdev</groupId>
-            <artifactId>svgSalamander</artifactId>
-            <version>1.1.4</version>
-            <scope>runtime</scope>
-        </dependency> <!-- 이후 아래에 추가 -->
+        <!-- blackears/svgSalamander 최신 태그 버전 사용 -->
     </dependencies>
 
 </project>

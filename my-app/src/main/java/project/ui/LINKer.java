@@ -15,9 +15,7 @@ import project.util.RoundedTextField;
 import project.util.SpeechBubble;
 import project.util.ScrollBar;
 
-// import com.kitfox.svg.app.beans.SVGIcon;
-
-
+// TODO: MAVEN 해결, SVG 등록하기, SvgUtils.java 구현현 tlqkf
 
 public class LINKer extends JFrame {
 
@@ -63,7 +61,6 @@ public class LINKer extends JFrame {
         setContentPane(contentPane);
 
         // 상단 닫기 버튼
-        // SVGIcon BackIcon = new SVGIcon();
         ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/Back.png"));
         Image img = rawIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon closeIcon = new ImageIcon(img);
@@ -94,7 +91,6 @@ public class LINKer extends JFrame {
         verticalBar.setPreferredSize(new Dimension(6, Integer.MAX_VALUE));
         verticalBar.setUI(new ScrollBar());
         verticalBar.setUnitIncrement(20); // 휠 스크롤 속도 증가
-
         // 입력창 하단 패널
         JPanel inputPanel = new JPanel(new BorderLayout(5, 0));
         inputPanel.setBounds(30, 520, 740, 40);
