@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+// import java.text.SimpleDateFormat;
+// import java.util.Date;
 
 public class SpeechBubble extends JPanel {
     private final boolean isRight;
@@ -18,7 +18,7 @@ public class SpeechBubble extends JPanel {
     // private Runnable onImageClick;
 
     // 타임스탬프 저장용 필드
-    private String timestamp;
+    // private String timestamp;
 
     // 텍스트용 생성자
     public SpeechBubble(String text, boolean isRight, Color bubbleColor) {
@@ -50,7 +50,7 @@ public class SpeechBubble extends JPanel {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
         // this.onImageClick = onImageClick;
-        this.timestamp = getCurrentTime();
+        // this.timestamp = getCurrentTime();
 
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -78,10 +78,10 @@ public class SpeechBubble extends JPanel {
         add(panel, BorderLayout.CENTER);
     }
 
-    private String getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        return sdf.format(new Date());
-    }
+    // private String getCurrentTime() {
+    //     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+    //     return sdf.format(new Date());
+    // }
 
     @Override
     public Dimension getPreferredSize() {

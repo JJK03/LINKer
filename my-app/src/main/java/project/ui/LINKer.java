@@ -17,6 +17,7 @@ import project.util.SvgUtils;
 import project.util.ScrollBar;
 
 // TODO: MAVEN 해결, SVG 등록하기, SvgUtils.java 구현 tlqkf
+// 해놨다~
 
 public class LINKer extends JFrame {
 
