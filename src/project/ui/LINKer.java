@@ -15,6 +15,10 @@ import project.util.RoundedTextField;
 import project.util.SpeechBubble;
 import project.util.ScrollBar;
 
+// import com.kitfox.svg.app.beans.SVGIcon;
+
+
+
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +63,7 @@ public class LINKer extends JFrame {
         setContentPane(contentPane);
 
         // 상단 닫기 버튼
+        // SVGIcon BackIcon = new SVGIcon();
         ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/Back.png"));
         Image img = rawIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon closeIcon = new ImageIcon(img);
