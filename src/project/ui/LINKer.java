@@ -47,7 +47,7 @@ public class LINKer extends JFrame {
             e.printStackTrace();
         }
 
-        setTitle("기가챗");
+        setTitle("LINKer");
         setUndecorated(true);
 
         int width = 800;

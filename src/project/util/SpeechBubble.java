@@ -35,7 +35,8 @@ public class SpeechBubble extends JPanel {
         textArea.setFocusable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setBorder(BorderFactory.createEmptyBorder(4, 6, 8, 13));
+        // 말풍선 여백
+        textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 13));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
