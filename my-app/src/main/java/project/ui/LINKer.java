@@ -13,9 +13,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import project.util.MessageWithTimestamp;
 import project.util.RoundedTextField;
 import project.util.SpeechBubble;
+import project.util.SvgUtils;
 import project.util.ScrollBar;
 
-// TODO: MAVEN 해결, SVG 등록하기, SvgUtils.java 구현현 tlqkf
+// TODO: MAVEN 해결, SVG 등록하기, SvgUtils.java 구현 tlqkf
 
 public class LINKer extends JFrame {
 
@@ -61,7 +62,8 @@ public class LINKer extends JFrame {
         setContentPane(contentPane);
 
         // 상단 닫기 버튼
-        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/Back.png"));
+        // ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/Back.png"));
+        ImageIcon rawIcon = SvgUtils.loadSvgIcon("/img/Back.svg", 1200, 1200);
         Image img = rawIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon closeIcon = new ImageIcon(img);
 
