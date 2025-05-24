@@ -37,11 +37,11 @@ public class LINKer extends JFrame {
     }
 
     public LINKer() {
-    	try {
-    	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    	} catch (Exception e) {
-    	    e.printStackTrace();
-    	}
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         setTitle("기가챗");
         setUndecorated(true);
@@ -54,8 +54,8 @@ public class LINKer extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         contentPane = new JPanel(null);
-        contentPane.setBackground(new Color(37, 42, 52));
-        contentPane.setBorder(new LineBorder(Color.GRAY, 2, true));
+        contentPane.setBackground(new Color(24, 26, 30));
+        contentPane.setBorder(new LineBorder(new Color(70, 70, 70), 2, true));
         setContentPane(contentPane);
 
         // 상단 닫기 버튼
@@ -74,7 +74,7 @@ public class LINKer extends JFrame {
 
         // 메시지 영역
         messagePanel = new JPanel(null);
-        messagePanel.setBackground(new Color(37, 42, 52));
+        messagePanel.setBackground(new Color(24, 26, 30));
 
         scrollPane = new JScrollPane(messagePanel);
         scrollPane.setBounds(30, 60, 740, 440);
@@ -104,7 +104,7 @@ public class LINKer extends JFrame {
         imageButton.setPreferredSize(new Dimension(40, 40));
         imageButton.setFocusable(false);
         imageButton.setContentAreaFilled(false); // 배경 없애기
-        imageButton.setBorderPainted(false);     // 테두리 없애기
+        imageButton.setBorderPainted(false); // 테두리 없애기
         imageButton.setOpaque(false);
         imageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         inputPanel.add(imageButton, BorderLayout.WEST);
@@ -120,11 +120,11 @@ public class LINKer extends JFrame {
         sendButton.setPreferredSize(new Dimension(40, 40));
         sendButton.setFocusable(false);
         sendButton.setContentAreaFilled(false); // 배경 없애기
-        sendButton.setBorderPainted(false);     // 테두리 없애기
+        sendButton.setBorderPainted(false); // 테두리 없애기
         sendButton.setOpaque(false);
         sendButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         inputPanel.add(sendButton, BorderLayout.EAST);
-        
+
         roundedInputField = new RoundedTextField(30);
         roundedInputField.setPlaceholder("메시지를 입력하세요...");
         inputPanel.add(roundedInputField, BorderLayout.CENTER);
@@ -147,7 +147,7 @@ public class LINKer extends JFrame {
         });
 
         JLabel lblTitle = new JLabel("상대방_이름", SwingConstants.CENTER);
-        lblTitle.setForeground(new Color(234, 234, 234));
+        lblTitle.setForeground(new Color(200, 200, 200));
         lblTitle.setFont(new Font("맑은 고딕", Font.BOLD, 20));
         lblTitle.setBounds(0, 8, width, 24);
         contentPane.add(lblTitle);
@@ -178,7 +178,8 @@ public class LINKer extends JFrame {
     private void sendMessage() {
         String message = roundedInputField.getText().trim();
         if (!message.isEmpty()) {
-            SpeechBubble bubble = new SpeechBubble(message, true, Color.decode("#DCF8C6"));
+            // 말풍선 색깔
+            SpeechBubble bubble = new SpeechBubble(message, true, Color.decode("#B3E5FC"));
 
             // 현재 시간 포맷팅
             String time = new SimpleDateFormat("HH:mm").format(new Date());
@@ -207,15 +208,17 @@ public class LINKer extends JFrame {
             Image scaled = icon.getImage().getScaledInstance(150, -1, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaled);
 
+            // 말풍선 색깔
             SpeechBubble imageBubble = new SpeechBubble(
                     scaledIcon,
                     true,
-                    Color.decode("#DCF8C6"),
-                    () -> showImagePopup(icon)
-                );
+                    Color.decode("#B3E5FC"),
+                    () -> showImagePopup(icon));
+
             String time = new SimpleDateFormat("HH:mm").format(new Date());
             MessageWithTimestamp wrapped = new MessageWithTimestamp(imageBubble, time, true);
             messagePanel.add(wrapped);
+
             layoutMessages();
         }
     }
@@ -223,7 +226,8 @@ public class LINKer extends JFrame {
     private void layoutMessages() {
         SwingUtilities.invokeLater(() -> {
             int panelWidth = messagePanel.getWidth();
-            if (panelWidth == 0) panelWidth = scrollPane.getViewport().getWidth();
+            if (panelWidth == 0)
+                panelWidth = scrollPane.getViewport().getWidth();
 
             int y = 0;
             for (Component comp : messagePanel.getComponents()) {
@@ -243,8 +247,9 @@ public class LINKer extends JFrame {
             });
         });
     }
+
     // 사진 확대
- // 1차 팝업 띄우는 함수 (중간 크기)
+    // 1차 팝업 띄우는 함수 (중간 크기)
     private void showImagePopup(ImageIcon icon) {
         JDialog dialog = new JDialog(this, true);
         dialog.setUndecorated(true);

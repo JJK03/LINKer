@@ -69,14 +69,10 @@ public class SpeechBubble extends JPanel {
         });
 
         // 타임스탬프 라벨 생성
-        timeLabel = new JLabel(timestamp);
-        timeLabel.setFont(new Font("Malgun Gothic", Font.PLAIN, 10));
-        timeLabel.setForeground(Color.DARK_GRAY);
-
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
         panel.add(imageLabel, BorderLayout.CENTER);
-        panel.add(timeLabel, BorderLayout.SOUTH);
+        // panel.add(timeLabel, BorderLayout.SOUTH);
 
         add(panel, BorderLayout.CENTER);
     }
@@ -104,10 +100,6 @@ public class SpeechBubble extends JPanel {
             int width = Math.min(Math.max(maxLineWidth + paddingHorizontal + extraMargin, 40), MAX_WIDTH + paddingHorizontal);
             textArea.setSize(width, Short.MAX_VALUE);
             int height = textArea.getPreferredSize().height;
-
-            if (timeLabel != null) {
-                height += timeLabel.getPreferredSize().height;
-            }
 
             return new Dimension(width, height);
         } else if (imageLabel != null) {
