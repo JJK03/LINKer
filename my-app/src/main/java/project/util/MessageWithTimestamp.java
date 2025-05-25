@@ -12,7 +12,7 @@ public class MessageWithTimestamp extends JPanel {
         setOpaque(false);
 
         JLabel timeLabel = new JLabel(time);
-        timeLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
+        timeLabel.setFont(new Font("Noto Sans CJK KR", Font.PLAIN, 11));
         timeLabel.setForeground(Color.GRAY);
 
         GridBagConstraints gbc = new GridBagConstraints();

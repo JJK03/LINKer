@@ -5,22 +5,27 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class EmojiPicker extends JPopupMenu {
+    public EmojiPicker(ActionListener onEmojiSelected) {
+        String[] emojis = {"😊", "😂", "❤️", "😍", "🤣", "😭", "🙏", "🤔", "😎", "😡"};
 
-    public EmojiPicker(ActionListener emojiSelectListener) {
-        String[] emojis = {
-            "😀", "😂", "😍", "😎", "😢", "😡", "👍", "🙏", "🎉", "❤️", "🔥", "🤔", "💡", "💯", "🥹"
-        };
+        JPanel panel = new JPanel(new GridLayout(2, 5, 5, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setBackground(new Color(60, 63, 65));
 
         for (String emoji : emojis) {
-            JMenuItem item = new JMenuItem(emoji);
-            item.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
-            item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-            item.addActionListener(emojiSelectListener); // 선택 이벤트 위임
-            add(item);
+            JButton btn = new JButton(emoji);
+            btn.setFont(new Font("Noto Sans CJK KR", Font.PLAIN, 24)); // 폰트 설정
+            btn.setFocusPainted(false);
+            btn.setContentAreaFilled(false);
+            btn.setBorderPainted(false);
+            btn.setOpaque(false);
+            btn.setForeground(Color.WHITE);
+            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn.setActionCommand(emoji);
+            btn.addActionListener(onEmojiSelected);
+            panel.add(btn);
         }
-    }
 
-    public void show(Component invoker, int x, int y) {
-        super.show(invoker, x, y);
+        add(panel);
     }
 }

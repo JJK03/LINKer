@@ -23,7 +23,7 @@ public class SpeechBubble extends JPanel {
         setLayout(new BorderLayout());
 
         textArea = new JTextArea(text);
-        textArea.setFont(new Font("Malgun Gothic", Font.PLAIN, 13));
+        textArea.setFont(new Font("Noto Sans CJK KR", Font.PLAIN, 13));
         textArea.setForeground(Color.BLACK);
         textArea.setOpaque(false);
         textArea.setEditable(false);

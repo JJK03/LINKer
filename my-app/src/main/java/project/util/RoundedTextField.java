@@ -12,7 +12,7 @@ public class RoundedTextField extends JTextField {
         setOpaque(false);
         setBackground(new Color(255, 255, 255, 0));  // 완전 투명 배경
         setForeground(Color.BLACK);  // 글씨 색깔 진하게
-        setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+        setFont(new Font("Noto Sans CJK KR", Font.PLAIN, 14));
         setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
     }
 

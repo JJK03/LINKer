@@ -168,7 +168,7 @@ public class LINKer extends JFrame {
         // 상단 제목 라벨
         JLabel lblTitle = new JLabel("상대방_이름", SwingConstants.CENTER);
         lblTitle.setForeground(new Color(200, 200, 200));
-        lblTitle.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+        lblTitle.setFont(new Font("Noto Sans CJK KR", Font.BOLD, 20));
         lblTitle.setBounds(0, 16, width, 24);
         contentPane.add(lblTitle);
 
@@ -179,7 +179,8 @@ public class LINKer extends JFrame {
 
         emojiButton.addActionListener(e -> {
             EmojiPicker picker = new EmojiPicker(ev -> {
-                String emoji = ((JMenuItem) ev.getSource()).getText();
+                AbstractButton btn = (AbstractButton) ev.getSource();
+                String emoji = btn.getActionCommand(); // 버튼에 저장된 이모지 문자
                 roundedInputField.setText(roundedInputField.getText() + emoji);
                 roundedInputField.requestFocusInWindow();
             });
