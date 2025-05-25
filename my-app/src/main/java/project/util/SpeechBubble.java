@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-// import java.text.SimpleDateFormat;
-// import java.util.Date;
 
 public class SpeechBubble extends JPanel {
     private final boolean isRight;
@@ -15,10 +13,7 @@ public class SpeechBubble extends JPanel {
     private JTextArea textArea;
     private JLabel imageLabel;
     private JLabel timeLabel; // 타임스탬프용 라벨
-    // private Runnable onImageClick;
 
-    // 타임스탬프 저장용 필드
-    // private String timestamp;
 
     // 텍스트용 생성자
     public SpeechBubble(String text, boolean isRight, Color bubbleColor) {
@@ -49,8 +44,6 @@ public class SpeechBubble extends JPanel {
     public SpeechBubble(ImageIcon icon, boolean isRight, Color bubbleColor, Runnable onImageClick) {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
-        // this.onImageClick = onImageClick;
-        // this.timestamp = getCurrentTime();
 
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -73,21 +66,14 @@ public class SpeechBubble extends JPanel {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
         panel.add(imageLabel, BorderLayout.CENTER);
-        // panel.add(timeLabel, BorderLayout.SOUTH);
 
         add(panel, BorderLayout.CENTER);
     }
-
-    // private String getCurrentTime() {
-    //     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-    //     return sdf.format(new Date());
-    // }
 
     @Override
     public Dimension getPreferredSize() {
         if (textArea != null) {
             textArea.setSize(new Dimension(MAX_WIDTH, Short.MAX_VALUE));
-            // Dimension d = textArea.getPreferredSize();
 
             FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
             int maxLineWidth = 0;

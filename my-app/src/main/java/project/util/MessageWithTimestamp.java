@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MessageWithTimestamp extends JPanel {
+    private final boolean isRight;  // 메시지가 오른쪽(내 메시지)인지 저장
+
     public MessageWithTimestamp(Component bubble, String time, boolean isRight) {
+        this.isRight = isRight;
         setLayout(new GridBagLayout());
         setOpaque(false);
 
@@ -25,7 +28,7 @@ public class MessageWithTimestamp extends JPanel {
             gbc.gridx = 0;
             gbc.gridy = 1;
             gbc.anchor = GridBagConstraints.NORTHWEST;
-            gbc.insets = new Insets(-15, 0, 0, 5);  // 여기서 top 마진을 2로 줄임 (살짝 위로)
+            gbc.insets = new Insets(-15, 0, 0, 5);
             add(timeLabel, gbc);
 
         } else {
@@ -39,8 +42,13 @@ public class MessageWithTimestamp extends JPanel {
             gbc.gridx = 1;
             gbc.gridy = 1;
             gbc.anchor = GridBagConstraints.NORTHEAST;
-            gbc.insets = new Insets(2, 5, 0, 0);  // 마찬가지로 top 마진 조정
+            gbc.insets = new Insets(2, 5, 0, 0);
             add(timeLabel, gbc);
         }
+    }
+
+    // isRight 값을 가져오는 getter 추가
+    public boolean isMine() {
+        return isRight;
     }
 }
