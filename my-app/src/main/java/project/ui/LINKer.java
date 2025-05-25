@@ -10,12 +10,13 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import project.util.EmojiPicker;
 import project.util.MessageWithTimestamp;
 import project.util.RoundedTextField;
 import project.util.SpeechBubble;
 import project.util.SvgUtils;
 import project.util.ScrollBar;
+
+// TODO Emoji.svg 누르면 이모티콘...
 
 public class LINKer extends JFrame {
 
@@ -54,12 +55,10 @@ public class LINKer extends JFrame {
         int width = 800;
         int height = 600;
         int arc = 40;
-        // 둥근 창 모양
         setShape(new RoundRectangle2D.Double(0, 0, width, height, arc, arc));
         setBounds(100, 100, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // 메인 contentPane - null 레이아웃
         contentPane = new JPanel(null);
         contentPane.setBackground(new Color(24, 26, 30));
         contentPane.setBorder(new LineBorder(new Color(70, 70, 70), 2, true));
@@ -77,7 +76,7 @@ public class LINKer extends JFrame {
         closeButton.addActionListener(e -> dispose());
         contentPane.add(closeButton);
 
-        // 메시지 패널 (null layout - 수동 배치)
+        // 메시지 패널
         messagePanel = new JPanel(null);
         messagePanel.setBackground(new Color(24, 26, 30));
 
@@ -90,19 +89,18 @@ public class LINKer extends JFrame {
         scrollPane.setOpaque(false);
         contentPane.add(scrollPane);
 
-        // 커스텀 스크롤바 적용
         JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
         verticalBar.setPreferredSize(new Dimension(6, Integer.MAX_VALUE));
         verticalBar.setUI(new ScrollBar());
-        verticalBar.setUnitIncrement(20); // 휠 스크롤 속도 증가
+        verticalBar.setUnitIncrement(20);
 
-        // 입력창 하단 패널 - BorderLayout 사용
+        // 입력창 하단 패널
         JPanel inputPanel = new JPanel(new BorderLayout(5, 0));
         inputPanel.setBounds(30, 520, 740, 40);
         inputPanel.setOpaque(false);
         contentPane.add(inputPanel);
 
-        // 1) 왼쪽 이미지 추가 버튼
+        // 왼쪽 이미지 업로드 버튼
         ImageIcon plusIcon = SvgUtils.loadSvgIcon("/img/Plus.svg", 35, 35);
         JButton imageButton = new JButton(plusIcon);
         imageButton.setPreferredSize(new Dimension(40, 40));
@@ -113,45 +111,30 @@ public class LINKer extends JFrame {
         imageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         inputPanel.add(imageButton, BorderLayout.WEST);
 
-        // 2) 가운데 입력 필드 (RoundedTextField)
+        // 가운데 입력 필드
         roundedInputField = new RoundedTextField(30);
         roundedInputField.setPlaceholder("메시지를 입력하세요...");
         inputPanel.add(roundedInputField, BorderLayout.CENTER);
 
-        // 문서 변경시 플레이스홀더 다시 그리기
         roundedInputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
                 roundedInputField.repaint();
             }
-
             @Override
             public void removeUpdate(javax.swing.event.DocumentEvent e) {
                 roundedInputField.repaint();
             }
-
             @Override
             public void changedUpdate(javax.swing.event.DocumentEvent e) {
                 roundedInputField.repaint();
             }
         });
 
-        // 3) 오른쪽에 이모지 버튼과 전송 버튼 묶는 패널 (FlowLayout 오른쪽 정렬)
+        // 오른쪽 전송 버튼만 있는 패널 (이모지 버튼 제거됨)
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
         rightPanel.setOpaque(false);
 
-        // 이모지 버튼
-        ImageIcon emojiIcon = SvgUtils.loadSvgIcon("/img/Emoji.svg", 35, 35);
-        JButton emojiButton = new JButton(emojiIcon);
-        emojiButton.setPreferredSize(new Dimension(40, 40));
-        emojiButton.setContentAreaFilled(false);
-        emojiButton.setBorderPainted(false);
-        emojiButton.setFocusPainted(false);
-        emojiButton.setOpaque(false);
-        emojiButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        rightPanel.add(emojiButton);
-
-        // 전송 버튼
         ImageIcon sendIcon = SvgUtils.loadSvgIcon("/img/Send.svg", 35, 35);
         JButton sendButton = new JButton(sendIcon);
         sendButton.setPreferredSize(new Dimension(40, 40));
@@ -162,7 +145,6 @@ public class LINKer extends JFrame {
         sendButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         rightPanel.add(sendButton);
 
-        // 오른쪽 패널을 inputPanel의 EAST에 추가
         inputPanel.add(rightPanel, BorderLayout.EAST);
 
         // 상단 제목 라벨
@@ -177,23 +159,12 @@ public class LINKer extends JFrame {
         roundedInputField.addActionListener(e -> sendMessage());
         imageButton.addActionListener(e -> uploadImage());
 
-        emojiButton.addActionListener(e -> {
-            EmojiPicker picker = new EmojiPicker(ev -> {
-                AbstractButton btn = (AbstractButton) ev.getSource();
-                String emoji = btn.getActionCommand(); // 버튼에 저장된 이모지 문자
-                roundedInputField.setText(roundedInputField.getText() + emoji);
-                roundedInputField.requestFocusInWindow();
-            });
-            picker.show(emojiButton, 0, emojiButton.getHeight());
-        });
-
         // 창 드래그 이동
         contentPane.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 initialClick = e.getPoint();
             }
         });
-
         contentPane.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
                 int xMoved = e.getX() - initialClick.x;
@@ -202,11 +173,9 @@ public class LINKer extends JFrame {
             }
         });
 
-        // 시작시 입력창에 포커스
         SwingUtilities.invokeLater(() -> roundedInputField.requestFocusInWindow());
     }
 
-    // 메시지 전송 처리
     private void sendMessage() {
         String message = roundedInputField.getText().trim();
         if (!message.isEmpty()) {
@@ -220,7 +189,6 @@ public class LINKer extends JFrame {
         }
     }
 
-    // 이미지 업로드 처리
     private void uploadImage() {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("이미지 업로드");
@@ -248,7 +216,6 @@ public class LINKer extends JFrame {
         }
     }
 
-    // 메시지 패널 레이아웃 조정
     private void layoutMessages() {
         SwingUtilities.invokeLater(() -> {
             int panelWidth = messagePanel.getWidth();
@@ -266,9 +233,9 @@ public class LINKer extends JFrame {
 
                     int x;
                     if (msg.isMine()) {
-                        x = panelWidth - width - 10; // 오른쪽 정렬
+                        x = panelWidth - width - 10;
                     } else {
-                        x = 10; // 왼쪽 정렬
+                        x = 10;
                     }
 
                     msg.setBounds(x, y, width, height);
@@ -280,7 +247,6 @@ public class LINKer extends JFrame {
             messagePanel.revalidate();
             messagePanel.repaint();
 
-            // 레이아웃이 모두 끝난 다음 스크롤을 최하단으로 설정
             SwingUtilities.invokeLater(() -> {
                 JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
                 verticalBar.setValue(verticalBar.getMaximum());
@@ -288,7 +254,6 @@ public class LINKer extends JFrame {
         });
     }
 
-    // 이미지 클릭 팝업
     private void showImagePopup(ImageIcon icon) {
         final JDialog dialog = new JDialog(this, true);
         dialog.setUndecorated(true);
@@ -322,85 +287,53 @@ public class LINKer extends JFrame {
 
                 addMouseListener(new MouseAdapter() {
                     public void mousePressed(MouseEvent e) {
-                        // 닫기 버튼 영역인지 확인
-                        if (closeButton.getBounds().contains(e.getPoint())) {
-                            dragStart = null;
-                            return;
-                        }
                         dragStart = e.getPoint();
                         setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                     }
-
                     public void mouseReleased(MouseEvent e) {
-                        dragStart = null;
-                        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                        setCursor(Cursor.getDefaultCursor());
                     }
                 });
 
-                addMouseMotionListener(new MouseMotionAdapter() {
+                addMouseMotionListener(new MouseAdapter() {
                     public void mouseDragged(MouseEvent e) {
-                        if (dragStart != null) {
-                            if (closeButton.getBounds().contains(e.getPoint())) {
-                                return;
-                            }
-                            int dx = e.getX() - dragStart.x;
-                            int dy = e.getY() - dragStart.y;
-                            offsetX += dx;
-                            offsetY += dy;
-                            dragStart = e.getPoint();
-                            repaint();
-                        }
+                        int dx = e.getX() - dragStart.x;
+                        int dy = e.getY() - dragStart.y;
+                        offsetX += dx;
+                        offsetY += dy;
+                        dragStart = e.getPoint();
+                        repaint();
                     }
                 });
 
                 addMouseWheelListener(e -> {
-                    double delta = 0.1 * e.getPreciseWheelRotation();
-                    double oldScale = scale;
+                    double delta = 0.05f * e.getPreciseWheelRotation();
                     scale -= delta;
-                    scale = Math.max(0.1, Math.min(scale, 5.0)); // 제한
-
-                    Point mouse = e.getPoint();
-
-                    int centerX = getWidth() / 2 + offsetX;
-                    int centerY = getHeight() / 2 + offsetY;
-
-                    double imgX = (mouse.x - centerX) / oldScale;
-                    double imgY = (mouse.y - centerY) / oldScale;
-
-                    offsetX = (int) (offsetX + (oldScale - scale) * imgX);
-                    offsetY = (int) (offsetY + (oldScale - scale) * imgY);
-
+                    scale = Math.max(0.1, Math.min(scale, 5));
                     repaint();
                 });
-
-                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
 
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g.create();
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-                int imgWidth = (int) (image.getWidth(this) * scale);
-                int imgHeight = (int) (image.getHeight(this) * scale);
+                int iw = (int) (image.getWidth(null) * scale);
+                int ih = (int) (image.getHeight(null) * scale);
 
-                int centerX = getWidth() / 2 + offsetX;
-                int centerY = getHeight() / 2 + offsetY;
+                int x = (getWidth() - iw) / 2 + offsetX;
+                int y = (getHeight() - ih) / 2 + offsetY;
 
-                g2d.drawImage(image, centerX - imgWidth / 2, centerY - imgHeight / 2, imgWidth, imgHeight, this);
-
-                g2d.dispose();
-            }
-
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(screenSize.width, screenSize.height);
+                g2.drawImage(image, x, y, iw, ih, null);
             }
         }
 
-        ZoomableImagePanel zoomPanel = new ZoomableImagePanel();
-        zoomPanel.setBounds(0, 0, screenSize.width, screenSize.height);
-        dialog.add(zoomPanel);
+        ZoomableImagePanel imagePanel = new ZoomableImagePanel();
+        imagePanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        dialog.add(imagePanel);
 
         dialog.setVisible(true);
     }
