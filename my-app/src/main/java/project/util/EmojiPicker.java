@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class EmojiPicker extends JPopupMenu {
     public EmojiPicker(ActionListener onEmojiSelected) {
-        String[] emojis = {"😊", "😂", "❤️", "😍", "🤣", "😭", "🙏", "🤔", "😎", "😡"};
+        String[] emojis = {"😊", "😂", "❤️", "😍", "🤣", "😭", "🙏", "🤔", "😎", "😡"}; // TODO - .svg로 변환...
 
         JPanel panel = new JPanel(new GridLayout(2, 5, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
