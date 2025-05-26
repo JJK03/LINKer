@@ -16,7 +16,7 @@ import project.util.SpeechBubble;
 import project.util.SvgUtils;
 import project.util.ScrollBar;
 
-// TODO Emoji.svg 누르면 이모티콘...
+// TODO 이모티콘 기능 구현하기 .svg
 
 public class LINKer extends JFrame {
 
@@ -121,10 +121,12 @@ public class LINKer extends JFrame {
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
                 roundedInputField.repaint();
             }
+
             @Override
             public void removeUpdate(javax.swing.event.DocumentEvent e) {
                 roundedInputField.repaint();
             }
+
             @Override
             public void changedUpdate(javax.swing.event.DocumentEvent e) {
                 roundedInputField.repaint();
@@ -156,7 +158,15 @@ public class LINKer extends JFrame {
 
         // 이벤트 등록
         sendButton.addActionListener(e -> sendMessage());
-        roundedInputField.addActionListener(e -> sendMessage());
+        // Enter로 메시지 전송
+        roundedInputField.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "sendMessage");
+        roundedInputField.getActionMap().put("sendMessage", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendMessage();
+            }
+        });
+
         imageButton.addActionListener(e -> uploadImage());
 
         // 창 드래그 이동
@@ -290,6 +300,7 @@ public class LINKer extends JFrame {
                         dragStart = e.getPoint();
                         setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                     }
+
                     public void mouseReleased(MouseEvent e) {
                         setCursor(Cursor.getDefaultCursor());
                     }

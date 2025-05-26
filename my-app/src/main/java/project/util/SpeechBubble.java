@@ -15,7 +15,7 @@ public class SpeechBubble extends JPanel {
     private JLabel timeLabel; // 타임스탬프용 라벨
 
 
-    // 텍스트용 생성자
+    // 텍스트용 말풍선 생성자
     public SpeechBubble(String text, boolean isRight, Color bubbleColor) {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
@@ -30,8 +30,8 @@ public class SpeechBubble extends JPanel {
         textArea.setFocusable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        // 말풍선 여백
-        textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 13));
+        // 말풍선과 텍스트간 내부 여백
+        textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 14));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
@@ -40,7 +40,7 @@ public class SpeechBubble extends JPanel {
         add(panel, BorderLayout.CENTER);
     }
 
-    // 이미지용 생성자
+    // 이미지용 말풍선 생성자
     public SpeechBubble(ImageIcon icon, boolean isRight, Color bubbleColor, Runnable onImageClick) {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
@@ -92,7 +92,7 @@ public class SpeechBubble extends JPanel {
         } else if (imageLabel != null) {
             Dimension size = imageLabel.getPreferredSize();
             int height = size.height + 20;
-            int width = size.width + 24;
+            int width = size.width + 20;
 
             if (timeLabel != null) {
                 height += timeLabel.getPreferredSize().height;
@@ -102,7 +102,7 @@ public class SpeechBubble extends JPanel {
         }
         return super.getPreferredSize();
     }
-
+    // 말풍선 배경 및 꼬리 그리기
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

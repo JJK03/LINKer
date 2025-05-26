@@ -12,11 +12,12 @@ public class ImageBubble extends JPanel {
         this.isRight = isRight;
         this.bubbleColor = bubbleColor;
         this.image = image;
-        setOpaque(false);
+        setOpaque(false); // 투명 처리
         setLayout(new BorderLayout());
 
+        // 이미지 표시용 라벨
         JLabel imageLabel = new JLabel(image);
-        imageLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        imageLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4)); // 여백
         add(imageLabel, BorderLayout.CENTER);
     }
 
@@ -30,9 +31,11 @@ public class ImageBubble extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // 부드러운 곡선 만들기
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        // 말풍선 둥근 모서리와 꼬리 크기 설정, 위치 계산
         int arc = 16;
         int tailW = 13;
         int tailH = 13;
@@ -45,7 +48,7 @@ public class ImageBubble extends JPanel {
         g2.setColor(bubbleColor);
         g2.fillRoundRect(bubbleX, bubbleY, bubbleW, bubbleH, arc, arc);
 
-        if (isRight) {
+        if (isRight) { // 오른쪽 메시지 (나)
             int baseX = bubbleX + bubbleW - arc / 2;
             int baseY = bubbleY + bubbleH - tailH;
 
@@ -56,7 +59,7 @@ public class ImageBubble extends JPanel {
             g2.fillPolygon(tail);
             g2.fillOval(baseX - tailW / 2, baseY + tailH / 2 - tailW / 2, tailW, tailW);
 
-        } else {
+        } else { // 상대방 메시지 (왼쪽 정렬)
             int baseX = bubbleX + arc / 2;
             int baseY = bubbleY + bubbleH - tailH;
 
