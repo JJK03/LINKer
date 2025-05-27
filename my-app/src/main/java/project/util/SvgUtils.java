@@ -1,53 +1,70 @@
 package project.util;
 
-import com.kitfox.svg.SVGDiagram;
-import com.kitfox.svg.SVGUniverse;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.ImageTranscoder;
+import org.apache.xmlgraphics.image.loader.Image;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.net.URI;
+import java.io.InputStream;
 
 public class SvgUtils {
 
-    private static final SVGUniverse universe = new SVGUniverse();
-
-    public static ImageIcon loadSvgIcon(String path, int width, int height) {
-        try {
-            URI uri = SvgUtils.class.getResource(path).toURI();
-            SVGDiagram diagram = universe.getDiagram(uri);
-            if (diagram == null) {
-                System.err.println("Diagram is null for: " + path);
+    /**
+     * SVG 파일을 원하는 크기의 ImageIcon으로 변환합니다.
+     *
+     * @param svgPath 리소스 경로 (예: "/emoji/1f604.svg")
+     * @param width   원하는 출력 가로 크기 (px)
+     * @param height  원하는 출력 세로 크기 (px)
+     * @return 변환된 ImageIcon 또는 null
+     */
+    public static ImageIcon resizeSvgIcon(String svgPath, int width, int height) {
+        try (InputStream svgInputStream = SvgUtils.class.getResourceAsStream(svgPath)) {
+            if (svgInputStream == null) {
+                System.err.println("❌ SVG 파일을 찾을 수 없습니다: " + svgPath);
                 return null;
             }
 
-            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = image.createGraphics();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            // Transcoder 설정
+            TranscoderInput input = new TranscoderInput(svgInputStream);
+            BufferedImageTranscoder transcoder = new BufferedImageTranscoder();
 
-            // SVG 원본 viewBox 크기 확인
-            double svgWidth = diagram.getViewRect().getWidth();
-            double svgHeight = diagram.getViewRect().getHeight();
+            // 해상도 및 출력 크기 설정
+            transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, (float) width);
+            transcoder.addTranscodingHint(ImageTranscoder.KEY_HEIGHT, (float) height);
+            transcoder.addTranscodingHint(ImageTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, 0.264583333f); // 96 DPI
 
-            if (svgWidth <= 0 || svgHeight <= 0) {
-                svgWidth = 100;
-                svgHeight = 100;
-            }
+            // SVG -> BufferedImage 변환
+            transcoder.transcode(input, null);
+            BufferedImage bufferedImage = transcoder.getBufferedImage();
 
-            // 스케일 비율 계산
-            double scaleX = (double) width / svgWidth;
-            double scaleY = (double) height / svgHeight;
-
-            // 좌표계 맞춤 (기본적으로 diagram.render는 viewBox에 맞게 그림)
-            g.scale(scaleX, scaleY);
-            diagram.render(g);
-
-            g.dispose();
-            return new ImageIcon(image);
+            return new ImageIcon(bufferedImage);
         } catch (Exception e) {
+            System.err.println("❌ SVG 변환 중 오류 발생: " + svgPath);
             e.printStackTrace();
             return null;
+        }
+    }
+    
+    /**
+     * 내부용: SVG를 BufferedImage로 렌더링하기 위한 Transcoder 구현
+     */
+    private static class BufferedImageTranscoder extends ImageTranscoder {
+        private BufferedImage image;
+
+        @Override
+        public BufferedImage createImage(int w, int h) {
+            return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        }
+
+        @Override
+        public void writeImage(BufferedImage img, TranscoderOutput out) {
+            this.image = img;
+        }
+
+        public BufferedImage getBufferedImage() {
+            return image;
         }
     }
 }

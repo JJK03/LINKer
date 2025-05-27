@@ -9,7 +9,7 @@ public class MessageWithTimestamp extends JPanel {
     public MessageWithTimestamp(Component bubble, String time, boolean isRight) {
         this.isRight = isRight;
         setLayout(new GridBagLayout());
-        setOpaque(false); // 투명명
+        setOpaque(false); // 투명
 
         // 시간 표시 라벨
         JLabel timeLabel = new JLabel(time);

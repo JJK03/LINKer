@@ -44,15 +44,12 @@ public class RoundedTextField extends JTextPane {
         }
     }
 
-    // 이모지 공사중...
-    public void insertEmojiIcon(ImageIcon emojiIcon) {
-        StyledDocument doc = getStyledDocument();
-        Style style = doc.addStyle("emoji", null);
-        StyleConstants.setIcon(style, emojiIcon);
-
+    public void insertEmoji(ImageIcon emojiIcon) {
+        int pos = getCaretPosition();
         try {
-            doc.insertString(getCaretPosition(), " ", null); // 공백 먼저
-            doc.insertString(getCaretPosition(), " ", style);
+            getDocument().insertString(pos, " ", null); // 텍스트 먼저 삽입
+            setCaretPosition(pos + 1); // 커서 한 칸 이동
+            insertIcon(emojiIcon);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
