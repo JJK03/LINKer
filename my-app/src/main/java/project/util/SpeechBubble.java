@@ -30,7 +30,9 @@ public class SpeechBubble extends JPanel {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         // 말풍선과 텍스트간 내부 여백
-        textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 14));
+        if(isRight) textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 14)); // 내 말풍선
+        else textArea.setBorder(BorderFactory.createEmptyBorder(4, 20, 8, 7)); // 상대방 말풍선선
+            
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
@@ -132,12 +134,12 @@ public class SpeechBubble extends JPanel {
             tail.addPoint(baseX, baseY + tailH);
             g2.fillPolygon(tail);
         } else {
-            int baseX = bubbleX + arc / 2 - 8; // 약간 오른쪽으로 여유 공간 확보
-            int baseY = bubbleY + bubbleH - arc / 2; // 말풍선 하단
+            int baseX = bubbleX + arc / 2 - 2; // 약간 오른쪽으로 여유 공간 확보
+            int baseY = bubbleY + bubbleH - arc / 2 - 6; // 말풍선 하단
 
             Polygon tail = new Polygon();
             tail.addPoint(baseX, baseY);
-            tail.addPoint(baseX - tailW, baseY + tailH / 2 + 15);
+            tail.addPoint(baseX - tailW, baseY + tailH / 2);
             tail.addPoint(baseX, baseY + tailH);
             g2.fillPolygon(tail);
         }

@@ -285,8 +285,7 @@ public class LINKer extends JFrame {
             roundedInputField.setText("");
             roundedInputField.requestFocusInWindow();
         }
-        receiveMessage("안녕하세요! 반가워요");
-
+        receiveMessage("안녕하세요! 반가워요"); // 임시 상대방 메시지
     }
 
     // 이미지 업로드
@@ -392,7 +391,7 @@ public class LINKer extends JFrame {
         return new ImageIcon(resizedImg);
     }
 
-    // 상대방 텍스트 메시지 수신
+    // 상대방 텍스트 메시지 수신 (임시)
     public void receiveMessage(String message) {
         if (message != null && !message.trim().isEmpty()) {
             SpeechBubble bubble = new SpeechBubble(message, false, Color.decode("#EEEEEE"));
