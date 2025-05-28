@@ -285,7 +285,7 @@ public class LINKer extends JFrame {
             roundedInputField.setText("");
             roundedInputField.requestFocusInWindow();
         }
-        receiveMessage("안녕하세요! 반가워요"); // 임시 상대방 메시지
+        // receiveMessage("안녕하세요! 반가워요"); // 임시 상대방 메시지
     }
 
     // 이미지 업로드
@@ -392,13 +392,13 @@ public class LINKer extends JFrame {
     }
 
     // 상대방 텍스트 메시지 수신 (임시)
-    public void receiveMessage(String message) {
-        if (message != null && !message.trim().isEmpty()) {
-            SpeechBubble bubble = new SpeechBubble(message, false, Color.decode("#EEEEEE"));
-            String time = new SimpleDateFormat("HH:mm").format(new Date());
-            MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, false);
-            messagePanel.add(wrapped);
-            layoutMessages();
-        }
-    }
+    // public void receiveMessage(String message) {
+    //     if (message != null && !message.trim().isEmpty()) {
+    //         SpeechBubble bubble = new SpeechBubble(message, false, Color.decode("#EEEEEE"));
+    //         String time = new SimpleDateFormat("HH:mm").format(new Date());
+    //         MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, false);
+    //         messagePanel.add(wrapped);
+    //         layoutMessages();
+    //     }
+    // }
 }

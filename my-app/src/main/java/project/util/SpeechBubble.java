@@ -134,7 +134,7 @@ public class SpeechBubble extends JPanel {
             tail.addPoint(baseX, baseY + tailH);
             g2.fillPolygon(tail);
         } else {
-            int baseX = bubbleX + arc / 2 - 2; // 약간 오른쪽으로 여유 공간 확보
+            int baseX = bubbleX + arc / 2 - 1; // 약간 오른쪽으로 여유 공간 확보
             int baseY = bubbleY + bubbleH - arc / 2 - 6; // 말풍선 하단
 
             Polygon tail = new Polygon();
