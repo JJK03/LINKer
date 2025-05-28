@@ -49,7 +49,7 @@ public class SpeechBubble extends JPanel {
         if (isRight)
             textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 14)); // 내 말풍선
         else
-            textArea.setBorder(BorderFactory.createEmptyBorder(4, 20, 8, 7)); // 상대방 말풍선선
+            textArea.setBorder(BorderFactory.createEmptyBorder(4, 20, 8, 7)); // 상대방 말풍선
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
@@ -67,7 +67,7 @@ public class SpeechBubble extends JPanel {
         setLayout(new BorderLayout());
 
         imageLabel = new JLabel(icon);
-        imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        imageLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 14));
         imageLabel.setOpaque(false);
         imageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 

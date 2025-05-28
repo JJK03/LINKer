@@ -2,7 +2,6 @@ package project.util;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
 
 public class RoundedTextField extends JTextPane {
     private String placeholder;

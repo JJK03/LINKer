@@ -21,7 +21,7 @@ import project.util.SpeechBubble;
 import project.util.SvgUtils;
 import project.util.ScrollBar;
 
-// TODO: 이모지 화질개선 안 되나...?
+// TODO: 채팅 저장 기능, 채팅창 오른쪽 위 ... 같은 버튼 눌러서 보낸 사진, 파일들, 채팅방 나가기, 신고하기 버튼 등등 구현 (+ 애니메이션)
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -393,12 +393,13 @@ public class LINKer extends JFrame {
 
     // 상대방 텍스트 메시지 수신 (임시)
     // public void receiveMessage(String message) {
-    //     if (message != null && !message.trim().isEmpty()) {
-    //         SpeechBubble bubble = new SpeechBubble(message, false, Color.decode("#EEEEEE"));
-    //         String time = new SimpleDateFormat("HH:mm").format(new Date());
-    //         MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, false);
-    //         messagePanel.add(wrapped);
-    //         layoutMessages();
-    //     }
+    // if (message != null && !message.trim().isEmpty()) {
+    // SpeechBubble bubble = new SpeechBubble(message, false,
+    // Color.decode("#EEEEEE"));
+    // String time = new SimpleDateFormat("HH:mm").format(new Date());
+    // MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, false);
+    // messagePanel.add(wrapped);
+    // layoutMessages();
+    // }
     // }
 }
