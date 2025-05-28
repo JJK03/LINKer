@@ -20,10 +20,14 @@ import project.util.RoundedTextField;
 import project.util.SpeechBubble;
 import project.util.SvgUtils;
 import project.util.ScrollBar;
+
 // TODO: 이모지 화질개선 안 되나...?
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;
+    private static final int MAX_IMAGE_SIZE = 300; // 사진의 최대 크기 제한
+    private static final int EMOJI_SIZE = 64; // 이모지 고정 사이즈 기준
+    private static final int EMOJI_THRESHOLD = 48; // 이모지인지 판단할 기준 크기ㄹ
 
     private JPanel contentPane;
     private Point initialClick;
@@ -204,7 +208,18 @@ public class LINKer extends JFrame {
             }
         });
 
-        imageButton.addActionListener(e -> uploadImage());
+        imageButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif");
+            fileChooser.setFileFilter(filter);
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                ImageIcon icon = new ImageIcon(selectedFile.getAbsolutePath());
+                uploadImage(icon);
+            }
+        });
 
         // 상단 상대방 이름 (채팅창 제목)
         JLabel lblTitle = new JLabel("상대방_이름", SwingConstants.CENTER);
@@ -271,32 +286,32 @@ public class LINKer extends JFrame {
             roundedInputField.requestFocusInWindow();
         }
     }
-    
+
     // 이미지 업로드
-    private void uploadImage() {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("이미지 업로드");
-        chooser.setFileFilter(new FileNameExtensionFilter("이미지 파일", "jpg", "jpeg", "png", "gif"));
+    private void uploadImage(ImageIcon icon) {
+        int maxSize = 300;
+        int originalWidth = icon.getIconWidth();
+        int originalHeight = icon.getIconHeight();
 
-        int result = chooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+        float scale = Math.min((float) maxSize / originalWidth, (float) maxSize / originalHeight);
+        scale = Math.min(scale, 1.0f); // 확대 방지
 
-            ImageIcon scaledIcon = getScaledImageIcon(icon, 60, 60);
+        int scaledWidth = (int) (originalWidth * scale);
+        int scaledHeight = (int) (originalHeight * scale);
 
-            SpeechBubble imageBubble = new SpeechBubble(
-                    scaledIcon,
-                    true,
-                    Color.decode("#B3E5FC"),
-                    () -> showImagePopup(icon));
+        Image scaledImage = icon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-            String time = new SimpleDateFormat("HH:mm").format(new Date());
-            MessageWithTimestamp wrapped = new MessageWithTimestamp(imageBubble, time, true);
-            messagePanel.add(wrapped);
+        SpeechBubble imageBubble = new SpeechBubble(
+                scaledIcon,
+                true,
+                Color.decode("#B3E5FC"),
+                () -> showImagePopup(icon));
 
-            layoutMessages();
-        }
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        MessageWithTimestamp wrapped = new MessageWithTimestamp(imageBubble, time, true);
+        messagePanel.add(wrapped);
+        layoutMessages();
     }
 
     // 메시지 레이아웃 정렬
@@ -331,23 +346,25 @@ public class LINKer extends JFrame {
             messagePanel.revalidate();
             messagePanel.repaint();
 
-            JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
-            verticalBar.setValue(verticalBar.getMaximum());
+            // 스크롤 바 맨 아래로 갱신
+            SwingUtilities.invokeLater(() -> {
+                JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+                verticalBar.setValue(verticalBar.getMaximum());
+            });
         });
     }
 
     // 이모지 메시지 전송
     private void sendEmojiMessage(ImageIcon icon) {
-        // 크기 조절
-        Image scaledImage = icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        int size = 64; // 고정 크기
+        Image scaledImage = icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         SpeechBubble emojiBubble = new SpeechBubble(
                 scaledIcon,
                 true,
                 Color.decode("#B3E5FC"),
-                () -> showImagePopup(icon) // 확대 기능 유지
-        );
+                () -> showImagePopup(icon));
 
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         MessageWithTimestamp wrapped = new MessageWithTimestamp(emojiBubble, time, true);
@@ -435,6 +452,7 @@ public class LINKer extends JFrame {
                     repaint();
                 });
             }
+
             // 이미지 그리기
             @Override
             protected void paintComponent(Graphics g) {
