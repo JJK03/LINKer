@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import project.util.EmojiPickerPanel;
+import project.util.ImagePopupViewer;
 import project.util.MessageWithTimestamp;
 import project.util.RoundedTextField;
 import project.util.SpeechBubble;
@@ -25,9 +25,6 @@ import project.util.ScrollBar;
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private static final int MAX_IMAGE_SIZE = 300; // 사진의 최대 크기 제한
-    private static final int EMOJI_SIZE = 64; // 이모지 고정 사이즈 기준
-    private static final int EMOJI_THRESHOLD = 48; // 이모지인지 판단할 기준 크기ㄹ
 
     private JPanel contentPane;
     private Point initialClick;
@@ -176,7 +173,6 @@ public class LINKer extends JFrame {
         // (이모지 버튼) (전송 버튼) 순서
         rightPanel.add(emojiButton);
         rightPanel.add(sendButton);
-
         inputPanel.add(rightPanel, BorderLayout.EAST);
 
         // 이모지 버튼 클릭 시 팝업 열기/닫기
@@ -285,6 +281,8 @@ public class LINKer extends JFrame {
             roundedInputField.setText("");
             roundedInputField.requestFocusInWindow();
         }
+        receiveMessage("안녕하세요! 반가워요");
+
     }
 
     // 이미지 업로드
@@ -306,7 +304,7 @@ public class LINKer extends JFrame {
                 scaledIcon,
                 true,
                 Color.decode("#B3E5FC"),
-                () -> showImagePopup(icon));
+                () -> ImagePopupViewer.showImagePopup(this, icon));
 
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         MessageWithTimestamp wrapped = new MessageWithTimestamp(imageBubble, time, true);
@@ -364,7 +362,7 @@ public class LINKer extends JFrame {
                 scaledIcon,
                 true,
                 Color.decode("#B3E5FC"),
-                () -> showImagePopup(icon));
+                () -> ImagePopupViewer.showImagePopup(this, icon));
 
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         MessageWithTimestamp wrapped = new MessageWithTimestamp(emojiBubble, time, true);
@@ -390,92 +388,14 @@ public class LINKer extends JFrame {
         return new ImageIcon(resizedImg);
     }
 
-    // 이미지 전체 보기 팝업 (확대 및 드래그 기능)
-    private void showImagePopup(ImageIcon icon) {
-        final JDialog dialog = new JDialog(this, true);
-        dialog.setUndecorated(true);
-        dialog.setBackground(new Color(0, 0, 0, 220));
-        dialog.setLayout(null);
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        dialog.setSize(screenSize);
-        dialog.setLocationRelativeTo(null);
-        // 이미지 확대 시 닫기 버튼
-        int closeBtnSize = 40;
-        ImageIcon closeIcon = SvgUtils.resizeSvgIcon("/img/Close.svg", closeBtnSize, closeBtnSize);
-        JButton closeButton = new JButton(closeIcon);
-        closeButton.setBounds(screenSize.width - closeBtnSize - 20, 20, closeBtnSize, closeBtnSize);
-        closeButton.setContentAreaFilled(false);
-        closeButton.setBorderPainted(false);
-        closeButton.setFocusPainted(false);
-        closeButton.setOpaque(false);
-        closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        closeButton.addActionListener(e -> dialog.dispose());
-        dialog.add(closeButton);
-
-        // 확대 및 이동 가능한 이미지 패널
-        class ZoomableImagePanel extends JPanel {
-            private Image image = icon.getImage();
-            private double scale = 1.0;
-            private int offsetX, offsetY;
-            private Point dragStart;
-
-            public ZoomableImagePanel() {
-                setOpaque(false);
-                // 마우스 클릭 시 드래그 시작 위치 저장 및 커서 손 모양
-                addMouseListener(new MouseAdapter() {
-                    public void mousePressed(MouseEvent e) {
-                        dragStart = e.getPoint();
-                        setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-                    }
-
-                    public void mouseReleased(MouseEvent e) {
-                        setCursor(Cursor.getDefaultCursor());
-                    }
-                });
-                // 마우스 드래그로 이미지 위치 이동
-                addMouseMotionListener(new MouseAdapter() {
-                    public void mouseDragged(MouseEvent e) {
-                        int dx = e.getX() - dragStart.x;
-                        int dy = e.getY() - dragStart.y;
-                        offsetX += dx;
-                        offsetY += dy;
-                        dragStart = e.getPoint();
-                        repaint();
-                    }
-                });
-                // 마우스 휠로 이미지 확대 축소
-                addMouseWheelListener(e -> {
-                    double delta = 0.05f * e.getPreciseWheelRotation();
-                    scale -= delta;
-                    scale = Math.max(0.1, Math.min(scale, 5));
-                    repaint();
-                });
-            }
-
-            // 이미지 그리기
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g;
-                // 이미지 품질 설정 (부드럽게 확대 축소)
-                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-
-                int iw = (int) (image.getWidth(null) * scale);
-                int ih = (int) (image.getHeight(null) * scale);
-
-                int x = (getWidth() - iw) / 2 + offsetX;
-                int y = (getHeight() - ih) / 2 + offsetY;
-
-                g2.drawImage(image, x, y, iw, ih, null);
-            }
+    // 상대방 텍스트 메시지 수신
+    public void receiveMessage(String message) {
+        if (message != null && !message.trim().isEmpty()) {
+            SpeechBubble bubble = new SpeechBubble(message, false, Color.decode("#EEEEEE"));
+            String time = new SimpleDateFormat("HH:mm").format(new Date());
+            MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, false);
+            messagePanel.add(wrapped);
+            layoutMessages();
         }
-
-        ZoomableImagePanel imagePanel = new ZoomableImagePanel();
-        imagePanel.setBounds(0, 0, screenSize.width, screenSize.height);
-        dialog.add(imagePanel);
-
-        dialog.setVisible(true);
     }
 }

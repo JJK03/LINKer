@@ -14,7 +14,6 @@ public class SpeechBubble extends JPanel {
     private JLabel imageLabel;
     private JLabel timeLabel; // 타임스탬프용 라벨
 
-
     // 텍스트용 말풍선 생성자
     public SpeechBubble(String text, boolean isRight, Color bubbleColor) {
         this.isRight = isRight;
@@ -84,7 +83,8 @@ public class SpeechBubble extends JPanel {
 
             int paddingHorizontal = 24;
             int extraMargin = 8;
-            int width = Math.min(Math.max(maxLineWidth + paddingHorizontal + extraMargin, 40), MAX_WIDTH + paddingHorizontal);
+            int width = Math.min(Math.max(maxLineWidth + paddingHorizontal + extraMargin, 40),
+                    MAX_WIDTH + paddingHorizontal);
             textArea.setSize(width, Short.MAX_VALUE);
             int height = textArea.getPreferredSize().height;
 
@@ -102,10 +102,11 @@ public class SpeechBubble extends JPanel {
         }
         return super.getPreferredSize();
     }
+
     // 말풍선 배경 및 꼬리 그리기
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -132,7 +133,7 @@ public class SpeechBubble extends JPanel {
             g2.fillPolygon(tail);
             g2.fillOval(baseX - tailW / 2, baseY + tailH / 2 - tailW / 2, tailW, tailW);
         } else {
-            int baseX = bubbleX + arc / 2;
+            int baseX = bubbleX + arc / 2 - 10;
             int baseY = bubbleY + bubbleH - tailH;
 
             Polygon tail = new Polygon();
@@ -144,5 +145,6 @@ public class SpeechBubble extends JPanel {
         }
 
         g2.dispose();
+        super.paintComponent(g);
     }
 }
