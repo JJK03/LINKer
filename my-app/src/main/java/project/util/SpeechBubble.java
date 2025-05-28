@@ -1,6 +1,8 @@
 package project.util;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,13 +28,28 @@ public class SpeechBubble extends JPanel {
         textArea.setForeground(Color.BLACK);
         textArea.setOpaque(false);
         textArea.setEditable(false);
-        textArea.setFocusable(false);
+        textArea.setFocusable(true);
+        textArea.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
+        // 텍스트 말풍선 내의 캐럿
+        textArea.setCaret(new DefaultCaret() {
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                super.setSelectionVisible(visible); // 선택은 보이게 유지
+            }
+
+            @Override
+            public void setVisible(boolean visible) {
+                // 커서 자체는 절대 보이지 않도록 무시
+            }
+        });
+
         // 말풍선과 텍스트간 내부 여백
-        if(isRight) textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 14)); // 내 말풍선
-        else textArea.setBorder(BorderFactory.createEmptyBorder(4, 20, 8, 7)); // 상대방 말풍선선
-            
+        if (isRight)
+            textArea.setBorder(BorderFactory.createEmptyBorder(4, 9, 8, 14)); // 내 말풍선
+        else
+            textArea.setBorder(BorderFactory.createEmptyBorder(4, 20, 8, 7)); // 상대방 말풍선선
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
