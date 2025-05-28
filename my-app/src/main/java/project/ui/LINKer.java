@@ -37,10 +37,12 @@ public class LINKer extends JFrame {
     private JDialog emojiDialog;
     private EmojiPickerPanel emojiPickerPanel;
 
+    private String fname = "";
+
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                LINKer frame = new LINKer();
+                LINKer frame = new LINKer("상대방_이름");
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -48,13 +50,15 @@ public class LINKer extends JFrame {
         });
     }
 
-    public LINKer() {
+    public LINKer(String fname) {
         try {
             // OS 기본 테마 적용
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        this.fname = fname; // 상대방 이름름
 
         // 기본 프레임 설정
         setTitle("LINKer");
@@ -218,7 +222,7 @@ public class LINKer extends JFrame {
         });
 
         // 상단 상대방 이름 (채팅창 제목)
-        JLabel lblTitle = new JLabel("상대방_이름", SwingConstants.CENTER);
+        JLabel lblTitle = new JLabel(fname, SwingConstants.CENTER);
         lblTitle.setForeground(new Color(200, 200, 200));
         lblTitle.setFont(new Font("Noto Sans CJK KR", Font.BOLD, 20));
         lblTitle.setBounds(0, 16, width, 24);

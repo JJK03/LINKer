@@ -1,9 +1,11 @@
 package project.panel;
 
 import project.login.RoundedPanel;
+import project.ui.LINKer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.foreign.Linker;
 import java.util.List;
 
 public class FriendPanel extends JPanel {
@@ -49,7 +51,8 @@ public class FriendPanel extends JPanel {
                 }
 
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    JOptionPane.showMessageDialog(FriendPanel.this, friend + "님과의 채팅창으로 이동합니다");
+                    LINKer ch = new LINKer(friend); // 친구 목록에서 선택된 친구이름 채팅창 제목으로 띄움
+                    ch.setVisible(true);
                 }
             });
 
