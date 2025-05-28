@@ -1,4 +1,4 @@
-package login;
+package project.login;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;

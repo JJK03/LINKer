@@ -1,6 +1,6 @@
-package panel;
+package project.panel;
 
-import login.RoundedPanel;
+import project.login.RoundedPanel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,7 +1,7 @@
-package login;
+package project.login;
 
-import panel.FriendPanel;
-import panel.SettingsPanel;
+import project.panel.FriendPanel;
+import project.panel.SettingsPanel;
 
 import javax.swing.*;
 import java.awt.*;
