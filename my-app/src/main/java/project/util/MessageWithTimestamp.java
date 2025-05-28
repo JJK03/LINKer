@@ -43,7 +43,7 @@ public class MessageWithTimestamp extends JPanel {
             gbc.gridx = 1;
             gbc.gridy = 1;
             gbc.anchor = GridBagConstraints.NORTHEAST;
-            gbc.insets = new Insets(2, 5, 0, 0);
+            gbc.insets = new Insets(-15, 5, 0, 0);
             add(timeLabel, gbc);
         }
     }
