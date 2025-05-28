@@ -131,17 +131,15 @@ public class SpeechBubble extends JPanel {
             tail.addPoint(baseX + tailW, baseY + tailH / 2);
             tail.addPoint(baseX, baseY + tailH);
             g2.fillPolygon(tail);
-            g2.fillOval(baseX - tailW / 2, baseY + tailH / 2 - tailW / 2, tailW, tailW);
         } else {
-            int baseX = bubbleX + arc / 2 - 10;
-            int baseY = bubbleY + bubbleH - tailH;
+            int baseX = bubbleX + arc / 2 - 8; // 약간 오른쪽으로 여유 공간 확보
+            int baseY = bubbleY + bubbleH - arc / 2; // 말풍선 하단
 
             Polygon tail = new Polygon();
             tail.addPoint(baseX, baseY);
-            tail.addPoint(baseX - tailW, baseY + tailH / 2);
+            tail.addPoint(baseX - tailW, baseY + tailH / 2 + 15);
             tail.addPoint(baseX, baseY + tailH);
             g2.fillPolygon(tail);
-            g2.fillOval(baseX - tailW / 2 - tailW / 2, baseY + tailH / 2 - tailW / 2, tailW, tailW);
         }
 
         g2.dispose();
