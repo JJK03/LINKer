@@ -14,14 +14,17 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import project.util.EmojiPickerPanel;
+import project.util.ImageConverterUtils;
 import project.util.ImagePopupViewer;
 import project.util.MessageWithTimestamp;
 import project.util.RoundedTextField;
 import project.util.SpeechBubble;
 import project.util.SvgUtils;
 import project.util.ScrollBar;
+import project.util.ImageConverterUtils;
 
 // TODO: 채팅 저장 기능, 채팅창 오른쪽 위 ... 같은 버튼 눌러서 보낸 사진, 파일들, 채팅방 나가기, 신고하기 버튼 등등 구현 (+ 애니메이션)
+// TODO: ImageConverterUtils.java, ImageMessageHandler.java랑 214줄 참고
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -208,6 +211,7 @@ public class LINKer extends JFrame {
             }
         });
 
+        // 이미지 바이트로 변환 -> DB 전송
         imageButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif");
@@ -217,6 +221,9 @@ public class LINKer extends JFrame {
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 ImageIcon icon = new ImageIcon(selectedFile.getAbsolutePath());
+                // DB 저장하기 전에 먼저 byte[] 또는 Base64로 변환
+                byte[] imageBytes = ImageConverterUtils.imageToBytes(icon, "png");
+                // → 여기에 DB INSERT 로직 또는 서버 전송이 들어갈 수 있음
                 uploadImage(icon);
             }
         });
