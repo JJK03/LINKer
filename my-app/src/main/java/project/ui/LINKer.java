@@ -13,6 +13,11 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.jdesktop.animation.timing.Animator;
+import org.jdesktop.animation.timing.TimingTargetAdapter;
+import org.jdesktop.animation.timing.interpolation.PropertySetter;
+
+import project.util.DrawerPanel;
 import project.util.EmojiPickerPanel;
 import project.util.ImageConverterUtils;
 import project.util.ImagePopupViewer;
@@ -40,6 +45,8 @@ public class LINKer extends JFrame {
     private JDialog emojiDialog;
     private EmojiPickerPanel emojiPickerPanel;
 
+    private boolean isDrawerOpen = false;
+
     private String fname = "";
 
     public static void main(String[] args) {
@@ -61,7 +68,7 @@ public class LINKer extends JFrame {
             e.printStackTrace();
         }
 
-        this.fname = fname; // 상대방 이름름
+        this.fname = fname; // 상대방 이름
 
         // 기본 프레임 설정
         setTitle("LINKer");
@@ -90,6 +97,38 @@ public class LINKer extends JFrame {
         closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         closeButton.addActionListener(e -> dispose());
         contentPane.add(closeButton);
+
+        // 상단 우측 옵션 버튼
+        ImageIcon optionIcon = SvgUtils.resizeSvgIcon("/img/Option.svg", 35, 35);
+        JButton optionButton = new JButton(optionIcon);
+        optionButton.setBounds(747, 14, 30, 30);
+        optionButton.setContentAreaFilled(false);
+        optionButton.setBorderPainted(false);
+        optionButton.setFocusPainted(false);
+        optionButton.setOpaque(false);
+        optionButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        contentPane.add(optionButton);
+
+        // 서랍 애니메이션
+        DrawerPanel drawerPanel = new DrawerPanel(300, height);
+        contentPane.add(drawerPanel);
+
+        // 오버레이 패널
+        JPanel overlayPanel = new JPanel();
+        overlayPanel.setBounds(0, 0, width, height);
+        overlayPanel.setBackground(new Color(24, 26, 30, 150)); // 채팅창과 같은 톤, 알파값으로 흐림
+        overlayPanel.setVisible(false);
+        contentPane.add(overlayPanel, Integer.valueOf(2)); // 가장 위로
+        optionButton.addActionListener(e -> {
+            toggleDrawer(drawerPanel, overlayPanel);
+        });
+        // 옵션 창 열린 상태에서 다른 곳에 포커스 시에 옵션 창 닫힘
+        overlayPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                toggleDrawer(drawerPanel, overlayPanel);
+            }
+        });
 
         // 메시지 패널
         messagePanel = new JPanel(null);
@@ -279,6 +318,41 @@ public class LINKer extends JFrame {
 
         SwingUtilities.invokeLater(() -> roundedInputField.requestFocusInWindow());
     } // LINKer 생성자 끝
+
+    // 옵션 창 토글
+    private void toggleDrawer(JPanel drawerPanel, JPanel overlayPanel) {
+        boolean willOpen = !isDrawerOpen; // 현재 상태에 따라 열릴 건지 판단
+
+        int startX = willOpen ? 800 : 600;
+        int endX = willOpen ? 600 : 800;
+
+        if (willOpen) {
+            overlayPanel.setVisible(true); // 열릴 경우 바로 보여줌
+        }
+
+        Animator animator = PropertySetter.createAnimator(
+                300,
+                drawerPanel,
+                "bounds",
+                new Rectangle(startX, 0, drawerPanel.getWidth(), drawerPanel.getHeight()),
+                new Rectangle(endX, 0, drawerPanel.getWidth(), drawerPanel.getHeight()));
+
+        animator.setAcceleration(0.2f);
+        animator.setDeceleration(0.3f);
+
+        animator.addTarget(new TimingTargetAdapter() {
+            @Override
+            public void end() {
+                isDrawerOpen = willOpen; // 애니메이션이 끝난 후에 상태 업데이트
+
+                if (!willOpen) {
+                    overlayPanel.setVisible(false); // 닫히는 경우만 끔
+                }
+            }
+        });
+
+        animator.start();
+    }
 
     // 텍스트 메시지 전송 처리
     private void sendMessage() {
