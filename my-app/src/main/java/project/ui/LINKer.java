@@ -171,7 +171,7 @@ public class LINKer extends JFrame {
         roundedInputField = new RoundedTextField(30);
         roundedInputField.setPlaceholder("메시지를 입력하세요...");
         inputPanel.add(roundedInputField, BorderLayout.CENTER);
-
+        // 문구 삽입, 삭제, 변화를 감지하여 플레이스홀더 생성
         roundedInputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -270,7 +270,7 @@ public class LINKer extends JFrame {
         // 상단 상대방 이름 (채팅창 제목)
         JLabel lblTitle = new JLabel(fname, SwingConstants.CENTER);
         lblTitle.setForeground(new Color(200, 200, 200));
-        lblTitle.setFont(new Font("Noto Sans CJK KR", Font.BOLD, 20));
+        lblTitle.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblTitle.setBounds(0, 16, width, 24);
         contentPane.add(lblTitle);
 

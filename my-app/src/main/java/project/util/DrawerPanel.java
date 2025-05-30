@@ -1,6 +1,7 @@
 package project.util;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.interpolation.PropertySetter;
@@ -23,37 +24,32 @@ public class DrawerPanel extends RoundedPanel {
 
     // 옵션 내부 버튼들 보낸 사진, 파일들, 채팅방 나가기, 신고하기
     private void initializeComponents() {
-        // 1. 버튼 생성
-        JButton sharedButton = new JButton("사진/동영상");
-        sharedButton.setBounds(20, 50, 160, 30);
-        sharedButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        add(sharedButton);
+        // 버튼 생성
+        JButton imageButton = createStyledButton("사진");
+        imageButton.setBounds(20, 50, 160, 30);
+        add(imageButton);
 
-        JButton fileButton = new JButton("파일");
-        fileButton.setBounds(20, 100, 160, 30);
-        fileButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        add(fileButton);
+        JButton planButton = createStyledButton("일정");
+        planButton.setBounds(20, 100, 160, 30);
+        add(planButton);
 
-        JButton themelogoutButton = new JButton("테마 변경");
+        JButton themelogoutButton = createStyledButton("테마 변경");
         themelogoutButton.setBounds(20, 150, 160, 30);
-        themelogoutButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(themelogoutButton);
 
-        JButton exitButton = new JButton("채팅방 나가기");
+        JButton exitButton = createStyledButton("채팅방 나가기");
         exitButton.setBounds(20, 480, 160, 30);
-        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(exitButton);
 
-        JButton reportButton = new JButton("신고하기");
+        JButton reportButton = createStyledButton("신고하기");
         reportButton.setForeground(Color.RED);
         reportButton.setBounds(20, 530, 160, 30);
-        reportButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(reportButton);
 
-        // 2. 리스트에 버튼들 추가
+        // 버튼 리스트
         List<JComponent> buttons = new ArrayList<>();
-        buttons.add(sharedButton);
-        buttons.add(fileButton);
+        buttons.add(imageButton);
+        buttons.add(planButton);
         buttons.add(themelogoutButton);
         buttons.add(exitButton);
         buttons.add(reportButton);
@@ -112,5 +108,81 @@ public class DrawerPanel extends RoundedPanel {
         path.lineTo(x + w, y); // 위쪽 직선
         path.closePath();
         return path;
+    }
+
+    // 버튼 스타일
+    private JButton createStyledButton(String text) {
+         JButton button = new JButton(text) {
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // 배경색 채우기 (라운드)
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
+
+            super.paintComponent(g);
+            g2.dispose();
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // 라운드 테두리 색
+            int arc = 12; // 버튼 곡률
+            g2.setColor(new Color(60, 60, 60));
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arc, arc);
+            g2.dispose();
+        }
+    };
+        button.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        button.setForeground(new Color(230, 230, 230));
+        button.setBackground(new Color(40, 42, 48));
+        button.setBorderPainted(false);  
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(false);
+        button.setOpaque(false);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // 호버 효과
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(0, 174, 255));
+                button.setFont(new Font("SansSerif", Font.BOLD, 15));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(40, 42, 48));
+                button.setFont(new Font("SansSerif", Font.PLAIN, 15));
+            }
+        });
+
+        return button;
+    }
+
+    // 둥근 버튼
+    private static class RoundedBorder implements Border {
+        private int radius;
+
+        RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+
+        public Insets getBorderInsets(Component c) {
+            return new Insets(radius + 1, radius + 1, radius + 2, radius);
+        }
+
+        public boolean isBorderOpaque() {
+            return false;
+        }
+
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            g.setColor(new Color(60, 60, 60));
+            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+        }
     }
 }

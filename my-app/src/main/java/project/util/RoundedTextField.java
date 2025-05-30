@@ -10,7 +10,7 @@ public class RoundedTextField extends JTextPane {
         setOpaque(false);
         setBackground(new Color(255, 255, 255, 0));
         setForeground(Color.BLACK);
-        setFont(new Font("Noto Sans CJK KR", Font.PLAIN, 14));
+        setFont(new Font("SansSerif", Font.PLAIN, 14));
         setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
     }
 
