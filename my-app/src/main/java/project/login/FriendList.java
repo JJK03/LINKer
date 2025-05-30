@@ -62,7 +62,6 @@ public class FriendList extends JFrame {
         closeBtn.setFont(new Font("SansSerif", Font.PLAIN, 14));
         closeBtn.addActionListener(e -> System.exit(0));
         topBar.add(closeBtn);
-
         contentPane.add(topBar, BorderLayout.NORTH);
 
         centerPanel = new JPanel();
@@ -87,9 +86,8 @@ public class FriendList extends JFrame {
         // 기본 glassPane 세팅
         JPanel glassPane = (JPanel) getGlassPane();
         glassPane.setLayout(null);
-        glassPane.setVisible(false);
+        glassPane.setVisible(true);
         glassPane.setOpaque(false);
-
         setVisible(true);
     }
 
@@ -132,6 +130,11 @@ public class FriendList extends JFrame {
 
         centerPanel.removeAll();
         centerPanel.setLayout(null);
+
+         JLabel lblNewLabel_1 = new JLabel("New label");
+        lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\준하\\Desktop\\bbbb.png"));
+        lblNewLabel_1.setBounds(630, 10, 123, 40);
+        centerPanel.add(lblNewLabel_1);
 
         switch (name) {
             case "친구목록":
