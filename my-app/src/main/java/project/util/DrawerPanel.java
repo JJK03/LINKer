@@ -2,8 +2,13 @@ package project.util;
 
 import javax.swing.*;
 
+import org.jdesktop.animation.timing.Animator;
+import org.jdesktop.animation.timing.interpolation.PropertySetter;
+
 import java.awt.*;
 import java.awt.geom.Path2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrawerPanel extends RoundedPanel {
 
@@ -16,17 +21,45 @@ public class DrawerPanel extends RoundedPanel {
         initializeComponents();
     }
 
+    // 옵션 내부 버튼들 보낸 사진, 파일들, 채팅방 나가기, 신고하기
     private void initializeComponents() {
-        // 버튼 추가
-        JButton settingsButton = new JButton("설정");
-        settingsButton.setBounds(20, 50, 160, 30);
-        add(settingsButton);
+        // 1. 버튼 생성
+        JButton sharedButton = new JButton("사진/동영상");
+        sharedButton.setBounds(20, 50, 160, 30);
+        sharedButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        add(sharedButton);
 
-        JButton logoutButton = new JButton("로그아웃");
-        logoutButton.setBounds(20, 100, 160, 30);
-        add(logoutButton);
+        JButton fileButton = new JButton("파일");
+        fileButton.setBounds(20, 100, 160, 30);
+        fileButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        add(fileButton);
+
+        JButton themelogoutButton = new JButton("테마 변경");
+        themelogoutButton.setBounds(20, 150, 160, 30);
+        themelogoutButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        add(themelogoutButton);
+
+        JButton exitButton = new JButton("채팅방 나가기");
+        exitButton.setBounds(20, 480, 160, 30);
+        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        add(exitButton);
+
+        JButton reportButton = new JButton("신고하기");
+        reportButton.setForeground(Color.RED);
+        reportButton.setBounds(20, 530, 160, 30);
+        reportButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        add(reportButton);
+
+        // 2. 리스트에 버튼들 추가
+        List<JComponent> buttons = new ArrayList<>();
+        buttons.add(sharedButton);
+        buttons.add(fileButton);
+        buttons.add(themelogoutButton);
+        buttons.add(exitButton);
+        buttons.add(reportButton);
     }
 
+    // 옵션 창
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -47,6 +80,7 @@ public class DrawerPanel extends RoundedPanel {
         g2.dispose();
     }
 
+    // 옵션 창 테두리
     @Override
     protected void paintBorder(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
