@@ -3,8 +3,7 @@ package project.util;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.jdesktop.animation.timing.Animator;
-import org.jdesktop.animation.timing.interpolation.PropertySetter;
+import project.util.button_in_option.ScheduleListDialog;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
@@ -25,34 +24,20 @@ public class DrawerPanel extends RoundedPanel {
     // 옵션 내부 버튼들 보낸 사진, 파일들, 채팅방 나가기, 신고하기
     private void initializeComponents() {
         // 버튼 생성
-        JButton imageButton = createStyledButton("사진");
-        imageButton.setBounds(20, 50, 160, 30);
-        add(imageButton);
 
         JButton planButton = createStyledButton("일정");
-        planButton.setBounds(20, 100, 160, 30);
+        planButton.setBounds(20, 50, 160, 30);
         add(planButton);
 
-        JButton themelogoutButton = createStyledButton("테마 변경");
-        themelogoutButton.setBounds(20, 150, 160, 30);
-        add(themelogoutButton);
-
-        JButton exitButton = createStyledButton("채팅방 나가기");
-        exitButton.setBounds(20, 480, 160, 30);
-        add(exitButton);
-
-        JButton reportButton = createStyledButton("신고하기");
-        reportButton.setForeground(Color.RED);
-        reportButton.setBounds(20, 530, 160, 30);
-        add(reportButton);
+        planButton.addActionListener(e -> {
+            Window parentWindow = SwingUtilities.getWindowAncestor(planButton);
+            ScheduleListDialog dialog = new ScheduleListDialog((JFrame) parentWindow);
+            dialog.setVisible(true);
+        });
 
         // 버튼 리스트
         List<JComponent> buttons = new ArrayList<>();
-        buttons.add(imageButton);
         buttons.add(planButton);
-        buttons.add(themelogoutButton);
-        buttons.add(exitButton);
-        buttons.add(reportButton);
     }
 
     // 옵션 창
@@ -112,36 +97,36 @@ public class DrawerPanel extends RoundedPanel {
 
     // 버튼 스타일
     private JButton createStyledButton(String text) {
-         JButton button = new JButton(text) {
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // 배경색 채우기 (라운드)
-            g2.setColor(getBackground());
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
+                // 배경색 채우기 (라운드)
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
 
-            super.paintComponent(g);
-            g2.dispose();
-        }
+                super.paintComponent(g);
+                g2.dispose();
+            }
 
-        @Override
-        protected void paintBorder(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // 라운드 테두리 색
-            int arc = 12; // 버튼 곡률
-            g2.setColor(new Color(60, 60, 60));
-            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arc, arc);
-            g2.dispose();
-        }
-    };
+                // 라운드 테두리 색
+                int arc = 12; // 버튼 곡률
+                g2.setColor(new Color(60, 60, 60));
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arc, arc);
+                g2.dispose();
+            }
+        };
         button.setFont(new Font("SansSerif", Font.PLAIN, 15));
         button.setForeground(new Color(230, 230, 230));
         button.setBackground(new Color(40, 42, 48));
-        button.setBorderPainted(false);  
+        button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setContentAreaFilled(false);
         button.setOpaque(false);

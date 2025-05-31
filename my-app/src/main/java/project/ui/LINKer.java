@@ -28,7 +28,7 @@ import project.util.SvgUtils;
 import project.util.ScrollBar;
 import project.util.ImageConverterUtils;
 
-// TODO: 채팅 저장 기능, 채팅창 오른쪽 위 ... 같은 버튼 눌러서 보낸 사진, 파일들, 채팅방 나가기, 신고하기 버튼 등등 구현 (+ 애니메이션)
+// TODO: 일정 내용 적는 스크롤 바 고치기 
 // TODO: ImageConverterUtils.java, ImageMessageHandler.java랑 214줄 참고
 public class LINKer extends JFrame {
 
@@ -78,6 +78,7 @@ public class LINKer extends JFrame {
         int arc = 40;
         setShape(new RoundRectangle2D.Double(0, 0, width, height, arc, arc));
         setBounds(100, 100, width, height);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 메인 패널 설정

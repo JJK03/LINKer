@@ -13,7 +13,7 @@ public class MessageWithTimestamp extends JPanel {
 
         // 시간 표시 라벨
         JLabel timeLabel = new JLabel(time);
-        timeLabel.setFont(new Font("BM JUA", Font.PLAIN, 11));
+        timeLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
         timeLabel.setForeground(Color.GRAY);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -48,7 +48,7 @@ public class MessageWithTimestamp extends JPanel {
         }
     }
 
-    // isRight 값을 가져오는 getter 추가
+    // isRight 값을 가져오는 getter
     public boolean isMine() {
         return isRight;
     }
