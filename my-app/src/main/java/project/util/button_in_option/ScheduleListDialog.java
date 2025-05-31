@@ -25,6 +25,30 @@ public class ScheduleListDialog extends JDialog {
         scheduleList.setBackground(darkBg); // 리스트 배경색
         scheduleList.setForeground(Color.WHITE); // 글자색 흰색
 
+        scheduleList.setCellRenderer(new ListCellRenderer<String>() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                JTextArea textArea = new JTextArea(value);
+                textArea.setLineWrap(true);
+                textArea.setWrapStyleWord(true);
+                textArea.setFont(list.getFont());
+                textArea.setOpaque(true);
+                textArea.setEditable(false);
+                textArea.setForeground(Color.WHITE);
+                textArea.setBackground(isSelected ? new Color(50, 50, 50) : new Color(24, 26, 30));
+                textArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+                // 리스트 너비에 맞게 텍스트 영역 크기 지정
+                int width = list.getWidth();
+                if (width > 0) {
+                    textArea.setSize(width, Short.MAX_VALUE);
+                }
+
+                return textArea;
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(scheduleList);
         scrollPane.getViewport().setBackground(darkBg); // 스크롤 안쪽 배경
         add(scrollPane, BorderLayout.CENTER);
@@ -139,6 +163,8 @@ public class ScheduleListDialog extends JDialog {
 
             gbc.gridx = 1;
             contentArea = new JTextArea(5, 20);
+            contentArea.setLineWrap(true);
+            contentArea.setWrapStyleWord(true);
             contentArea.setForeground(Color.WHITE);
             contentArea.setBackground(new Color(24, 26, 30));
             contentArea.setCaretColor(Color.WHITE);
