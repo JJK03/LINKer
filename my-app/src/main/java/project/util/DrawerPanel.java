@@ -3,10 +3,12 @@ package project.util;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import project.util.button_in_option.MapChoiceDialog;
 import project.util.button_in_option.ScheduleListDialog;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,23 +23,34 @@ public class DrawerPanel extends RoundedPanel {
         initializeComponents();
     }
 
-    // 옵션 내부 버튼들 보낸 사진, 파일들, 채팅방 나가기, 신고하기
+    // 옵션 내부 버튼들 일정, 지도
     private void initializeComponents() {
-        // 버튼 생성
 
         JButton planButton = createStyledButton("일정");
         planButton.setBounds(20, 50, 160, 30);
         add(planButton);
-
+        // 일정 버튼 클릭 시 일정창 등장 메서드
         planButton.addActionListener(e -> {
             Window parentWindow = SwingUtilities.getWindowAncestor(planButton);
             ScheduleListDialog dialog = new ScheduleListDialog((JFrame) parentWindow);
             dialog.setVisible(true);
         });
 
+        JButton mapButton = createStyledButton("지도");
+        mapButton.setBounds(20, 100, 160, 30);
+        add(mapButton);
+        // 지도 버튼 클릭 시 지도 프로그램 선택 창 등장 메서드 
+        mapButton.addActionListener(e -> {
+            JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(mapButton);
+
+            MapChoiceDialog dialog = new MapChoiceDialog(parentFrame, this::createStyledButton);
+            dialog.setVisible(true);
+        });
+
         // 버튼 리스트
         List<JComponent> buttons = new ArrayList<>();
         buttons.add(planButton);
+        buttons.add(mapButton);
     }
 
     // 옵션 창
