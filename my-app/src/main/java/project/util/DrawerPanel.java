@@ -8,7 +8,6 @@ import project.util.button_in_option.ScheduleListDialog;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,14 +38,13 @@ public class DrawerPanel extends RoundedPanel {
         JButton mapButton = createStyledButton("지도");
         mapButton.setBounds(20, 100, 160, 30);
         add(mapButton);
-        // 지도 버튼 클릭 시 지도 프로그램 선택 창 등장 메서드 
+        // 지도 버튼 클릭 시 지도 프로그램 선택 창 등장 메서드
         mapButton.addActionListener(e -> {
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(mapButton);
 
             MapChoiceDialog dialog = new MapChoiceDialog(parentFrame, this::createStyledButton);
             dialog.setVisible(true);
         });
-
         // 버튼 리스트
         List<JComponent> buttons = new ArrayList<>();
         buttons.add(planButton);

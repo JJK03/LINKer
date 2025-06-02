@@ -28,8 +28,8 @@ import project.util.SvgUtils;
 import project.util.ScrollBar;
 import project.util.ImageConverterUtils;
 
-// TODO: 일정 내용 적는 스크롤 바 고치기 
 // TODO: ImageConverterUtils.java, ImageMessageHandler.java랑 214줄 참고
+// TODO: 검색기능 구현중 
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -111,7 +111,7 @@ public class LINKer extends JFrame {
         contentPane.add(optionButton);
 
         // 서랍 애니메이션
-        DrawerPanel drawerPanel = new DrawerPanel(300, height);
+        DrawerPanel drawerPanel = new DrawerPanel(width, height);
         contentPane.add(drawerPanel);
 
         // 오버레이 패널
@@ -372,7 +372,7 @@ public class LINKer extends JFrame {
 
     // 이미지 업로드
     private void uploadImage(ImageIcon icon) {
-        int maxSize = 300;
+        int maxSize = 300; // 가로세로 300픽셀제한 
         int originalWidth = icon.getIconWidth();
         int originalHeight = icon.getIconHeight();
 
@@ -471,8 +471,7 @@ public class LINKer extends JFrame {
         g2.dispose();
 
         return new ImageIcon(resizedImg);
-    }
-
+    }   
     // 상대방 텍스트 메시지 수신 (임시)
     // public void receiveMessage(String message) {
     // if (message != null && !message.trim().isEmpty()) {
