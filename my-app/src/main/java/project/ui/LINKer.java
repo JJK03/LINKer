@@ -4,11 +4,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -318,6 +324,20 @@ public class LINKer extends JFrame {
         });
 
         SwingUtilities.invokeLater(() -> roundedInputField.requestFocusInWindow());
+
+        // // 임시 이미지 수신용 코드 (상대방)
+        // JButton testReceiveImageBtn = new JButton("이미지 수신 테스트");
+        // testReceiveImageBtn.addActionListener(e -> {
+        //     byte[] data = imageToBytesFromResource("/img/test_image.jpg");
+        //     receiveImage(data);
+        // });
+        // // 테스트용 수신 버튼 추가
+        // testReceiveImageBtn.setBounds(650, 14, 130, 30); // 적절한 위치 잡기
+        // testReceiveImageBtn.setFocusPainted(false);
+        // testReceiveImageBtn.setBackground(new Color(60, 63, 65));
+        // testReceiveImageBtn.setForeground(Color.WHITE);
+        // contentPane.add(testReceiveImageBtn);
+
     } // LINKer 생성자 끝
 
     // 옵션 창 토글
@@ -372,7 +392,7 @@ public class LINKer extends JFrame {
 
     // 이미지 업로드
     private void uploadImage(ImageIcon icon) {
-        int maxSize = 300; // 가로세로 300픽셀제한 
+        int maxSize = 400; // 가로세로 최대 400픽셀제한
         int originalWidth = icon.getIconWidth();
         int originalHeight = icon.getIconHeight();
 
@@ -471,7 +491,8 @@ public class LINKer extends JFrame {
         g2.dispose();
 
         return new ImageIcon(resizedImg);
-    }   
+    }
+
     // 상대방 텍스트 메시지 수신 (임시)
     // public void receiveMessage(String message) {
     // if (message != null && !message.trim().isEmpty()) {
@@ -482,5 +503,61 @@ public class LINKer extends JFrame {
     // messagePanel.add(wrapped);
     // layoutMessages();
     // }
+    // }
+    
+    // 상대방 이미지 수신 (임시)
+    // public void receiveImage(byte[] imageData) {
+    //     if (imageData == null || imageData.length == 0)
+    //         return;
+    //     try {
+    //         // byte[] -> BufferedImage
+    //         ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
+    //         BufferedImage image = ImageIO.read(bais);
+    //         if (image != null) {
+    //             ImageIcon icon = new ImageIcon(image);
+    //             // 크기 조절
+    //             int maxSize = 300;
+    //             int originalWidth = icon.getIconWidth();
+    //             int originalHeight = icon.getIconHeight();
+    //             float scale = Math.min((float) maxSize / originalWidth, (float) maxSize / originalHeight);
+    //             scale = Math.min(scale, 1.0f);
+    //             int scaledWidth = (int) (originalWidth * scale);
+    //             int scaledHeight = (int) (originalHeight * scale);
+    //             Image scaledImage = icon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+    //             ImageIcon scaledIcon = new ImageIcon(scaledImage);
+    //             // 말풍선 생성
+    //             SpeechBubble imageBubble = new SpeechBubble(
+    //                     scaledIcon,
+    //                     false, // 왼쪽 정렬 (상대방 메시지)
+    //                     Color.decode("#EEEEEE"),
+    //                     () -> ImagePopupViewer.showImagePopup(this, icon));
+    //             String time = new SimpleDateFormat("HH:mm").format(new Date());
+    //             MessageWithTimestamp wrapped = new MessageWithTimestamp(imageBubble, time, false);
+    //             messagePanel.add(wrapped);
+    //             layoutMessages();
+    //         } else {
+    //             System.err.println("이미지를 불러올 수 없습니다.");
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+    // public byte[] imageToBytesFromResource(String resourcePath) {
+    //     try (InputStream is = getClass().getResourceAsStream(resourcePath);
+    //             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+    //         if (is == null) {
+    //             System.err.println("리소스를 찾을 수 없습니다: " + resourcePath);
+    //             return null;
+    //         }
+    //         byte[] buffer = new byte[8192];
+    //         int bytesRead;
+    //         while ((bytesRead = is.read(buffer)) != -1) {
+    //             baos.write(buffer, 0, bytesRead);
+    //         }
+    //         return baos.toByteArray();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
     // }
 }

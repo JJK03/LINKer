@@ -67,7 +67,11 @@ public class SpeechBubble extends JPanel {
         setLayout(new BorderLayout());
 
         imageLabel = new JLabel(icon);
-        imageLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 14));
+        if(isRight)
+            imageLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 14)); // 내 이미지 말풍선 
+        else
+            imageLabel.setBorder(BorderFactory.createEmptyBorder(4, 14, 4, 4)); // 상대방 이미지 말풍선 
+
         imageLabel.setOpaque(false);
         imageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
