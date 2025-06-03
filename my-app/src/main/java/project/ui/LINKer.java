@@ -302,14 +302,14 @@ public class LINKer extends JFrame {
         contentPane.add(lblTitle);
 
         // 이모지 아이콘 목록 1.svg ~ 20.svg
-        List<ImageIcon> emojiIcons = new ArrayList<>();
+        List<Integer> emojiIds = new ArrayList<>();
         for (int i = 1; i <= 20; i++) {
-            ImageIcon icon = SvgUtils.resizeSvgIcon("/img/" + i + ".svg", 22, 22);
-            emojiIcons.add(icon);
+            emojiIds.add(i);
         }
 
+        
         // 이모지 패널과 다이얼로그 생성
-        emojiPickerPanel = new EmojiPickerPanel(emojiIcons, this::sendEmojiMessage);
+        emojiPickerPanel = new EmojiPickerPanel(emojiIds, this::sendEmojiMessageById);
         emojiDialog = new JDialog(this, false);
         emojiDialog.setUndecorated(true);
         emojiDialog.getContentPane().add(emojiPickerPanel);
@@ -477,16 +477,16 @@ public class LINKer extends JFrame {
     }
 
     // 이모지 메시지 전송
-    private void sendEmojiMessage(ImageIcon icon) {
-        int size = 64; // 고정 크기
-        Image scaledImage = icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+    public void sendEmojiMessageById(int emojiId) {
+        String path = "/img/" + emojiId + ".svg";
+        ImageIcon icon = SvgUtils.resizeSvgIcon(path, 64, 64); // 말풍선용
+        ImageIcon popupIcon = SvgUtils.resizeSvgIcon(path, 128, 128); // 팝업용
 
         SpeechBubble emojiBubble = new SpeechBubble(
-                scaledIcon,
+                icon,
                 true,
                 Color.decode("#B3E5FC"),
-                () -> ImagePopupViewer.showImagePopup(this, icon));
+                () -> ImagePopupViewer.showImagePopup(this, popupIcon));
 
         addMessageWithTimestamp(emojiBubble, true, null);
     }
