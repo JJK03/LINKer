@@ -238,10 +238,18 @@ public class LINKer extends JFrame {
         sendButton.setOpaque(false);
         sendButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        // (이모지 버튼) (전송 버튼) 순서
         rightPanel.add(emojiButton);
         rightPanel.add(sendButton);
         inputPanel.add(rightPanel, BorderLayout.EAST);
+        
+        // 이모지 받기 디버깅용 코드 (화면 중앙에 버튼 생성 후 누르면 하트 뿅)
+        // JButton testBtn = new JButton("이모지 수신");
+        // testBtn.addActionListener(e -> receiveEmojiMessageById(1));
+        // JDialog debugDialog = new JDialog(this, "디버깅 버튼", false);
+        // debugDialog.getContentPane().add(testBtn);
+        // debugDialog.setSize(200, 100);
+        // debugDialog.setLocationRelativeTo(this); // 화면 중앙
+        // debugDialog.setVisible(true);
 
         // 이모지 버튼 클릭 시 팝업 열기/닫기
         emojiButton.addActionListener(e -> {
@@ -497,6 +505,29 @@ public class LINKer extends JFrame {
 
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         MessageWithTimestamp wrapped = new MessageWithTimestamp(emojiBubble, time, true);
+        messagePanel.add(wrapped);
+        layoutMessages();
+    }
+
+    // 이모지 ID를 이용해 상대방에게서 이모지를 수신한 것처럼 처리
+    public void receiveEmojiMessageById(int emojiId) {
+        // 경로 예: /img/1.svg
+        String path = "/img/" + emojiId + ".svg";
+
+        // SVG 아이콘 로드 및 리사이즈
+        ImageIcon icon = SvgUtils.resizeSvgIcon(path, 64, 64); // 큰 말풍선용
+        ImageIcon popupIcon = SvgUtils.resizeSvgIcon(path, 128, 128); // 확대 팝업용
+
+        // 말풍선 생성 (false = 받은 메시지)
+        SpeechBubble emojiBubble = new SpeechBubble(
+                icon,
+                false,
+                Color.decode("#EEEEEE"),
+                () -> ImagePopupViewer.showImagePopup(this, popupIcon));
+
+        // 시간 표시
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        MessageWithTimestamp wrapped = new MessageWithTimestamp(emojiBubble, time, false);
         messagePanel.add(wrapped);
         layoutMessages();
     }
