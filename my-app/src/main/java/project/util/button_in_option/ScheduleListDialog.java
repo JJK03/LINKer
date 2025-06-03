@@ -1,6 +1,11 @@
 package project.util.button_in_option;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.*;
 import java.util.regex.*;
 import javax.swing.*;
@@ -8,6 +13,7 @@ import javax.swing.*;
 public class ScheduleListDialog extends JDialog {
     private DefaultListModel<String> scheduleListModel;
     private JList<String> scheduleList;
+    private static final String FILE_PATH = "schedules.txt";
 
     public ScheduleListDialog(JFrame parent) {
         super(parent, "일정 목록", true);
@@ -87,6 +93,7 @@ public class ScheduleListDialog extends JDialog {
                 int confirm = JOptionPane.showConfirmDialog(this, "삭제하시겠습니까?", "확인", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
                     scheduleListModel.remove(selectedIndex);
+                    saveSchedulesToFile(); // 삭제 후 저장
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "삭제할 일정을 선택하세요.");
@@ -98,6 +105,8 @@ public class ScheduleListDialog extends JDialog {
         bottomPanel.add(editButton);
         bottomPanel.add(deleteButton);
         add(bottomPanel, BorderLayout.SOUTH);
+
+        loadSchedulesFromFile();
     }
 
     // 일정 등록 및 수정 다이얼로그
@@ -209,6 +218,7 @@ public class ScheduleListDialog extends JDialog {
                         model.set(index, formatted);
                         JOptionPane.showMessageDialog(this, "일정이 수정되었습니다!");
                     }
+                    saveSchedulesToFile(); // 등록 또는 수정 후 저장
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "제목을 입력해주세요.");
@@ -230,4 +240,29 @@ public class ScheduleListDialog extends JDialog {
             }
         }
     }
+
+    // 파일에서 일정 불러오기
+    private void loadSchedulesFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) { // BufferedReader로 파일 읽기 
+            String line;
+            while ((line = reader.readLine()) != null) {
+                scheduleListModel.addElement(line); // 파일을 한 줄 씩 읽어서 scheduleListModel에 추가
+            }
+        } catch (IOException e) {
+            System.out.println("일정 파일이 없거나 읽는 중 오류 발생: " + e.getMessage());
+        }
+    }
+
+    // 파일에 일정 저장
+    private void saveSchedulesToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) { // BufferedWriter로 파일 쓰기 
+            for (int i = 0; i < scheduleListModel.size(); i++) {
+                writer.write(scheduleListModel.get(i));
+                writer.newLine(); // scheduleListModel에 저장된 모든 일정을 하나씩 파일에 씀
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
