@@ -4,18 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -33,10 +27,7 @@ import project.util.RoundedTextField;
 import project.util.SpeechBubble;
 import project.util.SvgUtils;
 import project.util.ScrollBar;
-import project.util.ImageConverterUtils;
 
-// TODO: ImageConverterUtils.java, ImageMessageHandler.java랑 214줄 참고
-// TODO: 검색기능 구현중 
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -241,7 +232,7 @@ public class LINKer extends JFrame {
         rightPanel.add(emojiButton);
         rightPanel.add(sendButton);
         inputPanel.add(rightPanel, BorderLayout.EAST);
-        
+
         // 이모지 받기 디버깅용 코드 (화면 중앙에 버튼 생성 후 누르면 하트 뿅)
         // JButton testBtn = new JButton("이모지 수신");
         // testBtn.addActionListener(e -> receiveEmojiMessageById(1));
@@ -374,7 +365,7 @@ public class LINKer extends JFrame {
 
     } // LINKer 생성자 끝
 
-    // 옵션 창 토글
+    // 옵션 창 토글 애니메이션 버그 수정
     private void toggleDrawer(JPanel drawerPanel, JPanel overlayPanel) {
         boolean willOpen = !isDrawerOpen; // 현재 상태에 따라 열릴 건지 판단
 
@@ -414,10 +405,7 @@ public class LINKer extends JFrame {
         String message = roundedInputField.getText().trim();
         if (!message.isEmpty()) {
             SpeechBubble bubble = new SpeechBubble(message, true, Color.decode("#B3E5FC"));
-            String time = new SimpleDateFormat("HH:mm").format(new Date());
-            MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, true);
-            messagePanel.add(wrapped);
-            layoutMessages();
+            addMessageWithTimestamp(bubble, true, null);
             roundedInputField.setText("");
             roundedInputField.requestFocusInWindow();
         }
@@ -445,10 +433,7 @@ public class LINKer extends JFrame {
                 Color.decode("#B3E5FC"),
                 () -> ImagePopupViewer.showImagePopup(this, icon));
 
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
-        MessageWithTimestamp wrapped = new MessageWithTimestamp(imageBubble, time, true);
-        messagePanel.add(wrapped);
-        layoutMessages();
+        addMessageWithTimestamp(imageBubble, true, null);
     }
 
     // 메시지 레이아웃 정렬
@@ -503,10 +488,7 @@ public class LINKer extends JFrame {
                 Color.decode("#B3E5FC"),
                 () -> ImagePopupViewer.showImagePopup(this, icon));
 
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
-        MessageWithTimestamp wrapped = new MessageWithTimestamp(emojiBubble, time, true);
-        messagePanel.add(wrapped);
-        layoutMessages();
+        addMessageWithTimestamp(emojiBubble, true, null);
     }
 
     // 이모지 ID를 이용해 상대방에게서 이모지를 수신한 것처럼 처리
@@ -526,10 +508,7 @@ public class LINKer extends JFrame {
                 () -> ImagePopupViewer.showImagePopup(this, popupIcon));
 
         // 시간 표시
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
-        MessageWithTimestamp wrapped = new MessageWithTimestamp(emojiBubble, time, false);
-        messagePanel.add(wrapped);
-        layoutMessages();
+        addMessageWithTimestamp(emojiBubble, false, null);
     }
 
     // 이미지 사이즈 재조절
@@ -555,10 +534,7 @@ public class LINKer extends JFrame {
     // if (message != null && !message.trim().isEmpty()) {
     // SpeechBubble bubble = new SpeechBubble(message, false,
     // Color.decode("#EEEEEE"));
-    // String time = new SimpleDateFormat("HH:mm").format(new Date());
-    // MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, false);
-    // messagePanel.add(wrapped);
-    // layoutMessages();
+    // addMessageWithTimestamp(bubble, false, null);
     // }
     // }
 
@@ -590,11 +566,7 @@ public class LINKer extends JFrame {
     // false, // 왼쪽 정렬 (상대방 메시지)
     // Color.decode("#EEEEEE"),
     // () -> ImagePopupViewer.showImagePopup(this, icon));
-    // String time = new SimpleDateFormat("HH:mm").format(new Date());
-    // MessageWithTimestamp wrapped = new MessageWithTimestamp(imageBubble, time,
-    // false);
-    // messagePanel.add(wrapped);
-    // layoutMessages();
+    // addMessageWithTimestamp(imageBubble, false, null);
     // } else {
     // System.err.println("이미지를 불러올 수 없습니다.");
     // }
@@ -602,6 +574,7 @@ public class LINKer extends JFrame {
     // e.printStackTrace();
     // }
     // }
+
     // public byte[] imageToBytesFromResource(String resourcePath) {
     // try (InputStream is = getClass().getResourceAsStream(resourcePath);
     // ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -620,4 +593,28 @@ public class LINKer extends JFrame {
     // return null;
     // }
     // }
+
+    // 타임스탬프 유지용 코드 msgTimeStamp -> 서버에 저장되어있는 시간
+    public void addMessageWithTimestamp(JComponent bubble, boolean isSenderMe, String msgTimeStamp) {
+        long timestamp;
+        if (msgTimeStamp == null) {
+            timestamp = System.currentTimeMillis();
+        } else {
+            try {
+                // 서버에서 받은 문자열 포맷에 맞게 SimpleDateFormat 객체 생성
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                Date parsedDate = sdf.parse(msgTimeStamp); // 문자열 → Date
+                timestamp = parsedDate.getTime(); // Date → long (밀리초)
+            } catch (Exception e) {
+                e.printStackTrace();
+                timestamp = System.currentTimeMillis(); // 파싱 실패 시 현재 시간 사용
+            }
+        }
+
+        String time = new SimpleDateFormat("HH:mm").format(new Date(timestamp));
+        MessageWithTimestamp wrapped = new MessageWithTimestamp(bubble, time, isSenderMe);
+        messagePanel.add(wrapped);
+        layoutMessages();
+    }
+
 }
