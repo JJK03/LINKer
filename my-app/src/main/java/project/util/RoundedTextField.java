@@ -35,14 +35,14 @@ public class RoundedTextField extends JTextPane {
         // Placeholder 항상 표시 조건
         if (placeholder != null && getText().isEmpty()) {
             Graphics2D g3 = (Graphics2D) g.create();
-            g3.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g3.setColor(new Color(24, 26, 30)); // 플레이스 홀더 색깔
-            Insets insets = getInsets();
-            FontMetrics fm = g3.getFontMetrics();
+            g3.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // 텍스트 부드럽게 표시
+            g3.setColor(new Color(24, 26, 30)); // 플레이스 홀더 색상
+            Insets insets = getInsets(); // 입력 패널 내부 여백을 가져옴
+            FontMetrics fm = g3.getFontMetrics(); // 폰트의 높이, 너비를 측정할 수 있는 객체 가져옴
             int x = insets.left;
             int y = getHeight() / 2 + fm.getAscent() / 2 - 2;
             g3.drawString(placeholder, x, y);
-            g3.dispose();
+            g3.dispose(); // g3 리소스 명시적으로 해제
         }
     }
 }
