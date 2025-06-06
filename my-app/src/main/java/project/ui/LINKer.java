@@ -92,7 +92,7 @@ public class LINKer extends JFrame {
         closeButton.setContentAreaFilled(false); // 배경 X
         closeButton.setBorderPainted(false); // 외곽선 X
         closeButton.setFocusPainted(false); // 포커스를 받았을 때 강조 X
-        closeButton.setOpaque(true); // 컴포넌트 투명
+        closeButton.setOpaque(false); // 컴포넌트 투명
         closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         closeButton.addActionListener(e -> dispose());
         contentPane.add(closeButton);
