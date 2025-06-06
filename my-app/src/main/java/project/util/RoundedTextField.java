@@ -6,7 +6,7 @@ import javax.swing.*;
 public class RoundedTextField extends JTextPane {
     private String placeholder;
 
-    public RoundedTextField(int i) {
+    public RoundedTextField() {
         setOpaque(false);
         setBackground(new Color(255, 255, 255, 0));
         setForeground(Color.BLACK);

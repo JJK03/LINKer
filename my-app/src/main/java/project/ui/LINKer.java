@@ -83,7 +83,7 @@ public class LINKer extends JFrame {
         contentPane = new JPanel(null);
         contentPane.setBackground(new Color(24, 26, 30));
         contentPane.setBorder(new LineBorder(new Color(70, 70, 70), 2, true));
-        setContentPane(contentPane);
+        setContentPane(contentPane);    
 
         // 상단 좌측 닫기 버튼
         ImageIcon closeIcon = SvgUtils.resizeSvgIcon("/img/Back.svg", 35, 35); // .svg 파일 리사이징
@@ -181,9 +181,10 @@ public class LINKer extends JFrame {
         inputPanel.add(imageButton, BorderLayout.WEST);
 
         // 메시지 입력 필드
-        roundedInputField = new RoundedTextField(30);
+        roundedInputField = new RoundedTextField();
         roundedInputField.setPlaceholder("메시지를 입력하세요...");
         inputPanel.add(roundedInputField, BorderLayout.CENTER);
+
         // 문구 삽입, 삭제, 변화를 감지하여 플레이스홀더 생성
         roundedInputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
