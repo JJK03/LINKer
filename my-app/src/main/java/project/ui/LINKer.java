@@ -86,13 +86,13 @@ public class LINKer extends JFrame {
         setContentPane(contentPane);
 
         // 상단 좌측 닫기 버튼
-        ImageIcon closeIcon = SvgUtils.resizeSvgIcon("/img/Back.svg", 35, 35);
+        ImageIcon closeIcon = SvgUtils.resizeSvgIcon("/img/Back.svg", 35, 35); // .svg 파일 리사이징
         JButton closeButton = new JButton(closeIcon);
         closeButton.setBounds(10, 14, 30, 30);
-        closeButton.setContentAreaFilled(false);
-        closeButton.setBorderPainted(false);
-        closeButton.setFocusPainted(false);
-        closeButton.setOpaque(false);
+        closeButton.setContentAreaFilled(false); // 배경 X
+        closeButton.setBorderPainted(false); // 외곽선 X
+        closeButton.setFocusPainted(false); // 포커스를 받았을 때 강조 X
+        closeButton.setOpaque(true); // 컴포넌트 투명
         closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         closeButton.addActionListener(e -> dispose());
         contentPane.add(closeButton);

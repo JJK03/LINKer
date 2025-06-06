@@ -12,7 +12,6 @@ public class SvgUtils {
 
     /**
      * SVG 파일을 원하는 크기의 ImageIcon으로 변환합니다.
-     *
      * @param svgPath 리소스 경로 (예: "/emoji/1f604.svg")
      * @param width   원하는 출력 가로 크기 (px)
      * @param height  원하는 출력 세로 크기 (px)
@@ -21,7 +20,7 @@ public class SvgUtils {
     public static ImageIcon resizeSvgIcon(String svgPath, int width, int height) {
         try (InputStream svgInputStream = SvgUtils.class.getResourceAsStream(svgPath)) {
             if (svgInputStream == null) {
-                System.err.println("❌ SVG 파일을 찾을 수 없습니다: " + svgPath);
+                System.err.println("SVG 파일을 찾을 수 없습니다: " + svgPath);
                 return null;
             }
 
@@ -40,15 +39,13 @@ public class SvgUtils {
 
             return new ImageIcon(bufferedImage);
         } catch (Exception e) {
-            System.err.println("❌ SVG 변환 중 오류 발생: " + svgPath);
+            System.err.println("SVG 변환 중 오류 발생: " + svgPath);
             e.printStackTrace();
             return null;
         }
     }
     
-    /**
-     * 내부용: SVG를 BufferedImage로 렌더링하기 위한 Transcoder 구현
-     */
+    // 내부용: SVG를 BufferedImage로 렌더링하기 위한 Transcoder 구현
     private static class BufferedImageTranscoder extends ImageTranscoder {
         private BufferedImage image;
 

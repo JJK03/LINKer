@@ -8,6 +8,8 @@ import java.util.*;
 
 import project.db.DBManager;
 
+
+// 서버
 class msgth extends Thread {
     private final String token = "ajk123#%k2!lsd!234!%^^f17!@#sdfs!@$3$*s1s56!@#";
     static Hashtable<String, Socket> usrNick = new Hashtable<>();
