@@ -7,12 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.awt.event.*;
-
-import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
 
 public class FriendPanel extends JPanel implements ThemeManager.ThemeChangeListener {
 

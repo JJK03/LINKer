@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-import java.util.TimeZone;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -29,8 +28,6 @@ import project.util.SpeechBubble;
 import project.util.SvgUtils;
 import project.util.ScrollBar;
 
-// TODO: 일정 내용 적는 스크롤 바 고치기 
-// TODO: ImageConverterUtils.java, ImageMessageHandler.java랑 214줄 참고
 public class LINKer extends JFrame {
 
     private static final long serialVersionUID = 1L;

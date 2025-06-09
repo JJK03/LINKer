@@ -14,8 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import project.Network.*;
-import project.core.AppContext;
-import project.ui.LINKer;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;

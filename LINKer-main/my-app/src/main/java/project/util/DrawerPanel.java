@@ -1,7 +1,6 @@
 package project.util;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import project.util.button_in_option.MapChoiceDialog;
 import project.util.button_in_option.ScheduleListDialog;
@@ -158,27 +157,5 @@ public class DrawerPanel extends RoundedPanel {
         });
 
         return button;
-    }
-
-    // 둥근 버튼
-    private static class RoundedBorder implements Border {
-        private int radius;
-
-        RoundedBorder(int radius) {
-            this.radius = radius;
-        }
-
-        public Insets getBorderInsets(Component c) {
-            return new Insets(radius + 1, radius + 1, radius + 2, radius);
-        }
-
-        public boolean isBorderOpaque() {
-            return false;
-        }
-
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.setColor(new Color(60, 60, 60));
-            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-        }
     }
 }
