@@ -211,7 +211,7 @@ public class Login extends JFrame {
     private void initServerConn(){
         try {
             ServerConn conn = new ServerConn(
-                    "sjc07250.iptime.org", 4885,
+                    "jjk0917.ddns.org", 4885,
                     "ajk123#%k2!lsd!234!%^^f17!@#sdfs!@$3$*s1s56!@#", // 토큰
                     "v0.0.1b" // 버전
             );

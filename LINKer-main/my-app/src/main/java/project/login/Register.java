@@ -122,7 +122,7 @@ public class Register extends JFrame {
         registerBtn.setBorder(BorderFactory.createEmptyBorder());
         panel.add(registerBtn);
 
-        // ✅ 뒤로가기 버튼 추가
+        // 뒤로가기 버튼 추가
         RoundedButton backBtn = new RoundedButton("뒤로가기", 30);
         backBtn.setFont(new Font("Dialog", Font.BOLD, 12));
         backBtn.setBackground(new Color(0, 0, 0));
@@ -140,7 +140,7 @@ public class Register extends JFrame {
         closeBtn.addActionListener(e -> System.exit(0));
         panel.add(closeBtn);
         
-                // ✅ 이미지 라벨 먼저 추가 (뒤로가기 버튼을 가리지 않게 하기 위해)
+                // 이미지 라벨 먼저 추가 (뒤로가기 버튼을 가리지 않게 하기 위해)
                 JLabel lblNewLabel_1 = new JLabel("");
                 lblNewLabel_1.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/img/qqqq.png"))));
 
@@ -193,7 +193,7 @@ public class Register extends JFrame {
 
         });
 
-        // ✅ 뒤로가기 버튼 동작
+        // 뒤로가기 버튼 동작
         backBtn.addActionListener(e -> {
             dispose();
             new Login(); // 로그인 창 호출

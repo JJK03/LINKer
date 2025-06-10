@@ -33,7 +33,7 @@ public class ScheduleListDialog extends JDialog {
         scheduleList.setCellRenderer(new ListCellRenderer<String>() {
             @Override
             public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+                    boolean isSelected, boolean cellHasFocus) {
                 JTextArea textArea = new JTextArea(value);
                 textArea.setLineWrap(true);
                 textArea.setWrapStyleWord(true);
@@ -120,7 +120,7 @@ public class ScheduleListDialog extends JDialog {
         }
 
         public ScheduleDialog(JFrame parent, DefaultListModel<String> model, int index,
-                              String dateStr, String titleText, String contentText) {
+                String dateStr, String titleText, String contentText) {
             super(parent, index == -1 ? "일정 등록" : "일정 수정", true);
             setSize(420, 320);
             setLocationRelativeTo(parent);
